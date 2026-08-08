@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@2.38.3/lib/msal-browser.min.js"></script>
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;background:#000C21;font-family:'Poppins',system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
+  a{color:#f2955c;text-decoration:none;} a:hover{color:#ffb583;}
+  ::-webkit-scrollbar{width:9px;height:9px;}
+  ::-webkit-scrollbar-track{background:rgba(6,22,48,0.5);}
+  ::-webkit-scrollbar-thumb{background:rgba(28,63,107,0.95);border-radius:6px;}
+  ::-webkit-scrollbar-thumb:hover{background:#2b5a94;}
+  input::placeholder{color:#5f80a6;}
+  button,select,input{transition:border-color .16s ease,background .16s ease,color .16s ease,transform .16s ease;}
+  @media(max-width:1080px){
+    #loginBrand{display:none !important;}
+    #loginCard{flex:1 !important;justify-content:center;padding:24px !important;}
+  }
+  @media(max-width:860px){
+    #hubShell{display:block !important;}
+    #hubSidebar{position:relative !important;width:100% !important;height:auto !important;border-right:0 !important;border-bottom:1px solid rgba(28,63,107,0.9);}
+    #hubSidebar nav{display:grid !important;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));max-height:none !important;}
+    #hubMain{padding:26px 16px 44px !important;}
+  }
+  @media(max-width:560px){
+    #hubSidebar nav{grid-template-columns:1fr !important;}
+    #hubMain{padding:22px 12px 38px !important;}
+  }
+</style>
+</helmet>
+
+<sc-if value="{{ showLogin }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:200;display:flex;align-items:center;background:#000C21;font-family:'Poppins',system-ui,sans-serif;overflow-y:auto;">
+
+    <div style="position:absolute;inset:0;background-image:url('assets/login-bg.png');background-size:cover;background-position:center right;"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(90deg,#000C21 0%,rgba(0,12,33,0.9) 26%,rgba(0,12,33,0.45) 46%,rgba(0,12,33,0.12) 66%,rgba(0,12,33,0.5) 100%);"></div>
+
+    <div id="loginBrand" style="position:relative;z-index:2;flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;padding:24px clamp(20px,3vw,48px) 24px clamp(36px,6vw,84px);color:#f3f7fc;">
+      <img src="assets/meridian-mark.png" alt="Meridian Group" style="display:block;height:clamp(74px,9vh,112px);width:auto;max-width:100%;object-fit:contain;object-position:left center;align-self:flex-start;margin-left:-3px;">
+      <div style="margin-top:34px;font-size:12px;font-weight:600;letter-spacing:0.22em;color:#ec6d25;">MERIDIAN NEXUS</div>
+      <div style="margin-top:12px;font-weight:800;font-size:clamp(42px,5.4vw,68px);line-height:0.98;letter-spacing:-0.03em;">Training<span style="color:#ec6d25;"> Hub</span></div>
+      <div style="margin-top:14px;font-weight:600;font-size:clamp(19px,2.3vw,28px);letter-spacing:-0.01em;color:#aebfd6;">Field Learning Performance</div>
+      <p style="margin:18px 0 0;max-width:480px;font-size:clamp(14px,1.4vw,17px);line-height:1.55;color:#c9d7e6;text-wrap:pretty;">Completion, pass rates and learner standings across every active training module and field team.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);margin-top:clamp(28px,5vh,56px);max-width:620px;">
+        <div style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 16px;">
+          <div style="width:66px;height:66px;border-radius:50%;border:1px solid rgba(236,109,37,0.4);display:grid;place-items:center;color:#ec6d25;margin-bottom:15px;">
+            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4-9-4Z"></path><path d="M3 7v10l9 4 9-4V7"></path></svg>
+          </div>
+          <div style="font-weight:600;font-size:15px;line-height:1.25;">Module tracking</div>
+          <div style="margin-top:8px;font-size:12.5px;line-height:1.5;color:#9dc4ec;">Every training programme in one view, read from the source workbooks.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 16px;border-left:1px solid rgba(28,63,107,0.9);">
+          <div style="width:66px;height:66px;border-radius:50%;border:1px solid rgba(236,109,37,0.4);display:grid;place-items:center;color:#ec6d25;margin-bottom:15px;">
+            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V11"></path><path d="M10 19V5"></path><path d="M16 19v-6"></path><path d="M3 21h18"></path></svg>
+          </div>
+          <div style="font-weight:600;font-size:15px;line-height:1.25;">Team performance</div>
+          <div style="margin-top:8px;font-size:12.5px;line-height:1.5;color:#9dc4ec;">Compare pass rates by region, area manager and rep type.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 16px;border-left:1px solid rgba(28,63,107,0.9);">
+          <div style="width:66px;height:66px;border-radius:50%;border:1px solid rgba(236,109,37,0.4);display:grid;place-items:center;color:#ec6d25;margin-bottom:15px;">
+            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 9 9"></path><path d="M12 7v5l3.5 2"></path><path d="M16.5 3.6 21 5l-1.4 4.5"></path></svg>
+          </div>
+          <div style="font-weight:600;font-size:15px;line-height:1.25;">Action follow-up</div>
+          <div style="margin-top:8px;font-size:12.5px;line-height:1.5;color:#9dc4ec;">See who has not started, who is mid-course and who needs a retake.</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="loginCard" style="position:relative;z-index:2;flex:none;display:flex;align-items:center;padding:32px clamp(36px,7vw,120px) 32px 24px;">
+      <div style="width:412px;max-width:100%;padding:38px 36px 32px;border-radius:16px;background:#061530;border:1px solid rgba(52,96,150,0.5);box-shadow:0 40px 90px rgba(0,4,12,0.72);">
+        <div style="display:flex;justify-content:center;">
+          <svg width="86" height="86" viewBox="0 0 64 64" fill="none" role="img" aria-label="Training Hub">
+            <path d="M32 10 60 22 32 34 4 22 32 10Z" fill="#ec6d25"></path>
+            <path d="M32 10 60 22 32 34 4 22 32 10Z" stroke="#ec6d25" stroke-width="2.4" stroke-linejoin="round"></path>
+            <path d="M15 27.6V40c0 4.4 7.6 8 17 8s17-3.6 17-8V27.6" stroke="#f2955c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M55.5 24.5V40" stroke="#f2955c" stroke-width="3" stroke-linecap="round"></path>
+            <circle cx="55.5" cy="45" r="4" fill="#f2955c"></circle>
+          </svg>
+        </div>
+        <div style="margin-top:22px;font-size:12px;font-weight:600;letter-spacing:0.2em;color:#ec6d25;text-align:center;">TRAINING HUB</div>
+        <h1 style="margin:10px 0 0;font-size:29px;font-weight:600;letter-spacing:-0.015em;line-height:1.12;color:#f3f7fc;text-align:center;">Welcome back</h1>
+        <p style="margin:10px 0 26px;font-size:14px;line-height:1.55;color:#9dc4ec;text-align:center;">Sign in with your Meridian Microsoft account to view live training performance.</p>
+
+        <button onClick="{{ signIn }}" style="width:100%;display:flex;align-items:center;justify-content:center;gap:11px;padding:15px 0;font-family:inherit;font-size:14px;font-weight:600;letter-spacing:0.2px;color:#1a1005;background:linear-gradient(135deg,#f2955c,#ec6d25);border:none;border-radius:12px;cursor:pointer;box-shadow:0 14px 30px -10px rgba(236,109,37,0.65);transition:transform .16s ease,box-shadow .16s ease;" style-hover="transform:translateY(-2px);box-shadow:0 20px 40px -12px rgba(236,109,37,0.8);">
+          <span style="display:inline-grid;grid-template-columns:1fr 1fr;gap:2px;width:16px;height:16px;">
+            <span style="background:#1a1005;opacity:0.95;"></span><span style="background:#1a1005;opacity:0.7;"></span>
+            <span style="background:#1a1005;opacity:0.7;"></span><span style="background:#1a1005;opacity:0.95;"></span>
+          </span>
+          {{ signInLabel }}
+        </button>
+
+        <div style="margin-top:12px;min-height:16px;font-size:12px;line-height:1.5;color:#ff8f6b;text-align:center;">{{ signInError }}</div>
+
+        <button onClick="{{ browseSample }}" style="width:100%;margin-top:4px;padding:11px 0;font-family:inherit;font-size:12.5px;color:#9dc4ec;background:none;border:none;cursor:pointer;text-decoration:underline;" style-hover="color:#f2955c;">Continue without signing in</button>
+
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:18px;padding-top:18px;border-top:1px solid rgba(28,63,107,0.9);font-size:11px;color:#9dc4ec;opacity:0.8;">
+          <span style="width:7px;height:7px;border-radius:50%;background:#2fc98e;"></span>
+          Secure access &middot; Microsoft 365
+        </div>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<div id="hubShell" style="position:relative;min-height:100vh;display:flex;align-items:stretch;background:#000C21;color:#f3f7fc;font-family:'Poppins',system-ui,sans-serif;">
+
+  <div style="position:fixed;inset:0;z-index:0;opacity:0.5;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cg fill='none' stroke='%231c3f6b' stroke-width='1.1'%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100'/%3E%3Cpath d='M28 0L28 34L0 50'/%3E%3Cpath d='M28 34L56 50'/%3E%3Cpath d='M0 84L28 100L56 84'/%3E%3C/g%3E%3C/svg%3E&quot;);"></div>
+  <div style="position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,rgba(0,12,33,0.55) 0%,rgba(0,12,33,0.88) 55%,#000C21 100%);"></div>
+
+  <aside id="hubSidebar" style="position:sticky;top:0;align-self:flex-start;z-index:2;flex:none;width:228px;height:100vh;display:flex;flex-direction:column;background:rgba(0,8,22,0.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-right:1px solid rgba(28,63,107,0.9);">
+    <div style="padding:26px 20px 22px;border-bottom:1px solid rgba(28,63,107,0.6);">
+      <div style="display:flex;align-items:center;gap:13px;">
+        <img src="assets/meridian-lockup.png" alt="Meridian" style="flex:none;width:36px;height:36px;object-fit:contain;">
+        <div style="min-width:0;">
+          <div style="font-size:9.5px;font-weight:600;letter-spacing:0.2em;color:#ec6d25;">MERIDIAN NEXUS</div>
+          <div style="margin-top:3px;font-size:18px;font-weight:700;letter-spacing:-0.02em;line-height:1.1;">Training Hub</div>
+        </div>
+      </div>
+    </div>
+
+    <nav style="flex:1;display:flex;flex-direction:column;gap:4px;padding:18px 12px;overflow-y:auto;">
+      <button onClick="{{ ovSelect }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:10px 12px;font-family:inherit;text-align:left;border-radius:10px;cursor:pointer;background:{{ ovBg }};border:1px solid {{ ovBorder }};transition:background .15s ease;" style-hover="background:rgba(28,63,107,0.42);">
+        <span style="min-width:0;">
+          <span style="display:block;font-size:13.5px;font-weight:600;color:{{ ovColor }};">Learning Performance</span>
+          <span style="display:block;margin-top:2px;font-size:10.5px;color:#5f80a6;">All modules</span>
+        </span>
+        <span style="flex:none;font-size:12px;font-weight:600;color:{{ ovPctColor }};font-variant-numeric:tabular-nums;">{{ ovPct }}</span>
+      </button>
+
+      <sc-for list="{{ navGroups }}" as="g" hint-placeholder-count="1">
+        <div style="display:flex;flex-direction:column;gap:4px;margin-top:16px;">
+          <div style="padding:0 12px 6px;font-size:9.5px;font-weight:600;letter-spacing:0.16em;color:#4f6c8e;text-transform:uppercase;">{{ g.client }}</div>
+          <sc-for list="{{ g.items }}" as="n" hint-placeholder-count="3">
+            <button onClick="{{ n.select }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:10px 12px;font-family:inherit;text-align:left;border-radius:10px;cursor:pointer;background:{{ n.bg }};border:1px solid {{ n.border }};transition:background .15s ease;" style-hover="background:rgba(28,63,107,0.42);">
+              <span style="min-width:0;">
+                <span style="display:block;font-size:13.5px;font-weight:600;color:{{ n.color }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ n.label }}</span>
+                <span style="display:block;margin-top:2px;font-size:10.5px;color:#5f80a6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ n.sub }}</span>
+              </span>
+              <span style="flex:none;font-size:12px;font-weight:600;color:{{ n.pctColor }};font-variant-numeric:tabular-nums;">{{ n.pct }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </sc-for>
+    </nav>
+
+    <div style="padding:14px 16px 16px;border-top:1px solid rgba(28,63,107,0.6);display:flex;flex-direction:column;gap:11px;">
+      <sc-if value="{{ canExit }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ signOut }}" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:9px 12px;font-family:inherit;font-size:11.5px;font-weight:500;color:#9dc4ec;background:rgba(0,6,18,0.65);border:1px solid rgba(28,63,107,0.9);border-radius:9px;cursor:pointer;transition:all .16s ease;" style-hover="color:#ff9b86;border-color:rgba(239,77,90,0.6);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path></svg>
+          {{ exitLabel }}
+        </button>
+      </sc-if>
+      <div style="display:flex;align-items:center;justify-content:center;">
+        <img src="assets/meridian-mark.png" alt="Meridian Group" style="height:30px;width:auto;max-width:100%;object-fit:contain;opacity:0.9;">
+      </div>
+    </div>
+  </aside>
+
+  <main id="hubMain" style="position:relative;z-index:1;flex:1;min-width:0;padding:38px clamp(22px,3vw,46px) 60px;">
+
+    <sc-if value="{{ isOverview }}" hint-placeholder-val="{{ true }}">
+      <div>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+          <div>
+            <h1 style="margin:0;font-size:clamp(27px,3vw,37px);font-weight:700;letter-spacing:-0.025em;line-height:1.06;">Learning Performance Overview</h1>
+            <p style="margin:11px 0 0;font-size:15px;color:#9dc4ec;line-height:1.5;max-width:640px;text-wrap:pretty;">One view across every active learning module and field team.</p>
+          </div>
+          <div style="flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+            <span style="padding:9px 17px;border-radius:22px;font-size:12.5px;font-weight:600;color:#f2955c;background:rgba(236,109,37,0.12);border:1px solid rgba(236,109,37,0.45);">{{ moduleCountLabel }}</span>
+            <span style="font-size:11.5px;color:#6f92ba;">{{ lastRefreshed }}</span>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(214px,1fr));gap:16px;margin-top:26px;">
+          <sc-for list="{{ portfolioKpis }}" as="k" hint-placeholder-count="4">
+            <div style="padding:21px 23px 22px;border-radius:16px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.5);">
+              <div style="font-size:10.5px;font-weight:600;letter-spacing:0.17em;color:#8fb0d4;text-transform:uppercase;">{{ k.label }}</div>
+              <div style="margin-top:12px;font-size:38px;font-weight:700;letter-spacing:-0.035em;line-height:1;color:{{ k.color }};">{{ k.value }}</div>
+              <div style="margin-top:9px;font-size:12.5px;color:#9dc4ec;line-height:1.45;">{{ k.note }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(292px,1fr));gap:18px;margin-top:20px;">
+          <sc-for list="{{ moduleCards }}" as="m" hint-placeholder-count="3">
+            <button onClick="{{ m.open }}" style="display:block;width:100%;text-align:left;padding:22px 24px 23px;font-family:inherit;border-radius:16px;cursor:pointer;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);border-left:3px solid {{ m.accent }};box-shadow:0 18px 40px rgba(0,4,12,0.5);transition:transform .16s ease,border-color .16s ease;" style-hover="transform:translateY(-3px);">
+              <span style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+                <span style="min-width:0;font-size:19px;font-weight:600;letter-spacing:-0.015em;color:#f3f7fc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ m.name }}</span>
+                <span style="flex:none;text-align:right;">
+                  <span style="display:block;font-size:10px;font-weight:600;letter-spacing:0.14em;color:#6f92ba;text-transform:uppercase;">{{ m.eyebrow }}</span>
+                  <span style="display:block;margin-top:3px;font-size:10px;font-weight:600;letter-spacing:0.1em;color:#4f6c8e;text-transform:uppercase;">{{ m.client }}</span>
+                </span>
+              </span>
+              <span style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:19px;">
+                <span style="display:block;">
+                  <span style="display:block;font-size:11.5px;color:#8fb0d4;">Pass rate</span>
+                  <span style="display:block;margin-top:4px;font-size:21px;font-weight:700;letter-spacing:-0.02em;color:{{ m.passColor }};font-variant-numeric:tabular-nums;">{{ m.passRate }}</span>
+                </span>
+                <span style="display:block;">
+                  <span style="display:block;font-size:11.5px;color:#8fb0d4;">Completion</span>
+                  <span style="display:block;margin-top:4px;font-size:21px;font-weight:700;letter-spacing:-0.02em;color:{{ m.compColor }};font-variant-numeric:tabular-nums;">{{ m.completion }}</span>
+                </span>
+                <span style="display:block;">
+                  <span style="display:block;font-size:11.5px;color:#8fb0d4;">Avg score</span>
+                  <span style="display:block;margin-top:4px;font-size:21px;font-weight:700;letter-spacing:-0.02em;color:#8fd6a8;font-variant-numeric:tabular-nums;">{{ m.aveScore }}</span>
+                </span>
+              </span>
+              <span style="display:block;margin-top:18px;height:7px;border-radius:5px;background:rgba(28,63,107,0.9);overflow:hidden;">
+                <span style="display:block;height:100%;width:{{ m.completion }};background:{{ m.barFill }};border-radius:5px;transition:width .5s ease;"></span>
+              </span>
+              <span style="display:block;margin-top:14px;padding-top:13px;border-top:1px solid rgba(28,63,107,0.7);font-size:12.5px;color:#9dc4ec;">{{ m.footer }}</span>
+            </button>
+          </sc-for>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:18px;margin-top:20px;align-items:stretch;">
+
+          <section style="display:flex;flex-direction:column;padding:23px 26px 26px;border-radius:16px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.5);">
+            <h2 style="margin:0;font-size:17px;font-weight:600;letter-spacing:-0.015em;">Module performance comparison</h2>
+            <div style="margin-top:5px;font-size:12.5px;color:#8fb0d4;">Pass rate by module</div>
+            <div style="flex:1;display:flex;align-items:flex-end;justify-content:space-around;gap:16px;min-height:240px;margin-top:22px;">
+              <sc-for list="{{ chartBars }}" as="b" hint-placeholder-count="3">
+                <button onClick="{{ b.open }}" style="flex:1;min-width:0;max-width:150px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;align-self:stretch;padding:0;font-family:inherit;background:none;border:none;cursor:pointer;">
+                  <span style="font-size:13px;font-weight:700;color:{{ b.color }};font-variant-numeric:tabular-nums;">{{ b.value }}</span>
+                  <span style="font-size:10.5px;color:#6f92ba;margin-top:2px;font-variant-numeric:tabular-nums;">{{ b.detail }}</span>
+                  <span style="display:block;width:100%;margin-top:9px;height:{{ b.height }};min-height:5px;border-radius:8px 8px 3px 3px;background:{{ b.fill }};transition:height .55s ease;"></span>
+                  <span style="margin-top:12px;font-size:11.5px;line-height:1.35;color:#c9d7e6;text-align:center;text-wrap:pretty;">{{ b.label }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </section>
+
+          <section style="display:flex;flex-direction:column;padding:23px 26px 26px;border-radius:16px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.5);">
+            <h2 style="margin:0;font-size:17px;font-weight:600;letter-spacing:-0.015em;">Portfolio action summary</h2>
+            <div style="margin-top:5px;font-size:12.5px;color:#8fb0d4;">Every learner assignment across all modules</div>
+            <div style="display:flex;flex-direction:column;gap:2px;margin-top:20px;">
+              <sc-for list="{{ statusRows }}" as="s" hint-placeholder-count="4">
+                <div style="display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid rgba(28,63,107,0.42);">
+                  <span style="width:9px;height:9px;border-radius:50%;flex:none;background:{{ s.dot }};"></span>
+                  <span style="flex:1;font-size:13.5px;color:#e4edf7;">{{ s.label }}</span>
+                  <span style="flex:none;font-size:15px;font-weight:700;color:#f3f7fc;font-variant-numeric:tabular-nums;">{{ s.count }}</span>
+                  <span style="flex:none;width:46px;text-align:right;font-size:12px;color:#7ba0c8;font-variant-numeric:tabular-nums;">{{ s.pct }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="margin-top:20px;padding:18px 20px;border-radius:12px;background:rgba(236,109,37,0.1);border:1px solid rgba(236,109,37,0.38);">
+              <div style="font-size:15px;font-weight:600;color:#f3f7fc;letter-spacing:-0.01em;">{{ followUpTitle }}</div>
+              <div style="margin-top:7px;font-size:13px;line-height:1.55;color:#c9d7e6;text-wrap:pretty;">{{ followUpBody }}</div>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isModule }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;">
+          <div>
+            <button onClick="{{ backToOverview }}" style="display:flex;align-items:center;gap:7px;padding:0;margin-bottom:13px;font-family:inherit;font-size:12px;color:#8fb0d4;background:none;border:none;cursor:pointer;" style-hover="color:#f2955c;">&larr; Learning Performance Overview</button>
+            <h1 style="margin:0;font-size:clamp(26px,2.8vw,35px);font-weight:700;letter-spacing:-0.025em;line-height:1.06;">{{ moduleTitle }}</h1>
+            <p style="margin:10px 0 0;font-size:14px;color:#9dc4ec;line-height:1.5;max-width:660px;text-wrap:pretty;">{{ moduleSubtitle }}</p>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:11px;flex-wrap:wrap;margin-top:24px;padding:14px 18px;border-radius:14px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.48);">
+          <input value="{{ query }}" onChange="{{ onQuery }}" placeholder="Search learner, code or manager…" style="flex:1;min-width:230px;padding:10px 14px;font-family:inherit;font-size:13px;color:#f3f7fc;background:rgba(0,6,18,0.8);border:1px solid rgba(28,63,107,0.9);border-radius:10px;outline:none;" style-focus="border-color:#ec6d25;">
+          <sc-for list="{{ filterSelects }}" as="s" hint-placeholder-count="4">
+            <select value="{{ s.value }}" onChange="{{ s.onChange }}" style="min-width:150px;padding:10px 12px;font-family:inherit;font-size:13px;color:#f3f7fc;background:rgba(0,6,18,0.8);border:1px solid {{ s.border }};border-radius:10px;outline:none;cursor:pointer;" style-focus="border-color:#ec6d25;">
+              <sc-for list="{{ s.options }}" as="o" hint-placeholder-count="3">
+                <option value="{{ o.value }}" style="background:#04162e;color:#f3f7fc;">{{ o.label }}</option>
+              </sc-for>
+            </select>
+          </sc-for>
+          <button onClick="{{ clearAll }}" style="padding:10px 18px;font-family:inherit;font-size:12.5px;font-weight:600;border-radius:10px;cursor:pointer;color:{{ resetColor }};background:{{ resetBg }};border:1px solid {{ resetBorder }};transition:all .16s ease;">Reset</button>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));gap:16px;margin-top:16px;">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="5">
+            <div style="position:relative;padding:19px 22px 20px 24px;border-radius:16px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.5);overflow:hidden;">
+              <span style="position:absolute;left:0;top:0;bottom:0;width:4px;background:{{ k.accent }};"></span>
+              <div style="font-size:10.5px;font-weight:600;letter-spacing:0.17em;color:#8fb0d4;text-transform:uppercase;">{{ k.label }}</div>
+              <div style="margin-top:11px;font-size:34px;font-weight:700;letter-spacing:-0.03em;line-height:1;color:{{ k.color }};">{{ k.value }}</div>
+              <div style="margin-top:9px;font-size:12px;color:#9dc4ec;line-height:1.45;">{{ k.note }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <section style="margin-top:18px;padding:20px 26px 22px;border-radius:16px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.5);">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+            <div>
+              <h2 style="margin:0;font-size:17px;font-weight:600;letter-spacing:-0.015em;">Learning status</h2>
+              <div style="margin-top:5px;font-size:12.5px;color:#8fb0d4;">Current learner journey distribution &middot; click a status to filter</div>
+            </div>
+            <div style="font-size:12.5px;color:#8fb0d4;"><span style="font-size:20px;font-weight:700;color:#f3f7fc;letter-spacing:-0.02em;">{{ donutTotal }}</span> learners in view</div>
+          </div>
+          <div style="display:flex;gap:3px;height:16px;margin-top:16px;border-radius:9px;overflow:hidden;background:rgba(28,63,107,0.6);">
+            <sc-for list="{{ statusBand }}" as="s" hint-placeholder-count="3">
+              <div style="width:{{ s.width }};min-width:5px;background:{{ s.color }};transition:width .5s ease;"></div>
+            </sc-for>
+          </div>
+          <div style="display:flex;gap:11px;flex-wrap:wrap;margin-top:15px;">
+            <sc-for list="{{ donutLegend }}" as="l" hint-placeholder-count="3">
+              <button onClick="{{ l.select }}" style="display:flex;align-items:center;gap:9px;padding:8px 14px;font-family:inherit;border-radius:10px;cursor:pointer;background:{{ l.bg }};border:1px solid {{ l.border }};transition:background .14s ease;" style-hover="background:rgba(28,63,107,0.4);">
+                <span style="flex:none;width:9px;height:9px;border-radius:50%;background:{{ l.color }};"></span>
+                <span style="font-size:12.5px;color:#e4edf7;">{{ l.label }}</span>
+                <span style="font-size:14px;font-weight:700;color:#f3f7fc;font-variant-numeric:tabular-nums;">{{ l.count }}</span>
+                <span style="font-size:11.5px;color:#7ba0c8;font-variant-numeric:tabular-nums;">{{ l.pct }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </section>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:18px;margin-top:18px;align-items:stretch;">
+
+          <section style="display:flex;flex-direction:column;padding:23px 26px 26px;border-radius:16px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 20px 46px rgba(0,4,12,0.52);">
+            <h2 style="margin:0;font-size:17px;font-weight:600;letter-spacing:-0.015em;">Completion by region</h2>
+            <div style="margin-top:5px;font-size:12.5px;color:#8fb0d4;">Lessons completed as a share of lessons assigned</div>
+            <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:11px;margin-top:18px;">
+              <sc-for list="{{ regionBars }}" as="g" hint-placeholder-count="8">
+                <button onClick="{{ g.select }}" style="display:grid;grid-template-columns:minmax(104px,1fr) minmax(0,2.4fr) 46px;gap:12px;align-items:center;width:100%;padding:6px 9px;margin:0 -9px;font-family:inherit;text-align:left;background:{{ g.bg }};border:1px solid {{ g.border }};border-radius:9px;cursor:pointer;transition:background .14s ease;" style-hover="background:rgba(28,63,107,0.3);">
+                  <span style="min-width:0;font-size:12.5px;color:#e4edf7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ g.name }}</span>
+                  <span style="display:block;height:9px;border-radius:6px;background:rgba(28,63,107,0.85);overflow:hidden;">
+                    <span style="display:block;height:100%;width:{{ g.pctLabel }};border-radius:6px;background:{{ g.barFill }};transition:width .5s ease;"></span>
+                  </span>
+                  <span style="text-align:right;font-size:12.5px;font-weight:700;color:{{ g.pctColor }};font-variant-numeric:tabular-nums;">{{ g.pctLabel }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </section>
+
+          <section style="display:flex;flex-direction:column;padding:23px 24px 24px;border-radius:16px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 20px 46px rgba(0,4,12,0.52);">
+            <h2 style="margin:0;font-size:17px;font-weight:600;letter-spacing:-0.015em;">Manager leaderboard</h2>
+            <div style="margin-top:5px;font-size:12.5px;color:#8fb0d4;">Ranked by learner pass rate, then completion</div>
+            <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:11px;margin-top:18px;">
+              <sc-for list="{{ managerBoard }}" as="g" hint-placeholder-count="10">
+                <button onClick="{{ g.select }}" style="display:grid;grid-template-columns:22px minmax(104px,1fr) minmax(0,2.4fr) 46px;gap:12px;align-items:center;width:100%;padding:6px 9px;margin:0 -9px;font-family:inherit;text-align:left;background:{{ g.bg }};border:1px solid {{ g.border }};border-radius:9px;cursor:pointer;transition:background .14s ease;" style-hover="background:rgba(28,63,107,0.3);">
+                  <span style="font-size:11px;font-weight:700;color:{{ g.rankColor }};font-variant-numeric:tabular-nums;">{{ g.rank }}</span>
+                  <span style="min-width:0;font-size:12.5px;color:#e4edf7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ g.name }}</span>
+                  <span style="display:block;height:9px;border-radius:6px;background:rgba(28,63,107,0.85);overflow:hidden;">
+                    <span style="display:block;height:100%;width:{{ g.passLabel }};border-radius:6px;background:{{ g.barFill }};transition:width .5s ease;"></span>
+                  </span>
+                  <span style="text-align:right;font-size:12.5px;font-weight:700;color:{{ g.passColor }};font-variant-numeric:tabular-nums;">{{ g.passLabel }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </section>
+
+        </div>
+
+
+        <section style="display:flex;flex-direction:column;margin-top:18px;border-radius:16px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 20px 46px rgba(0,4,12,0.52);overflow:hidden;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:21px 26px 18px;">
+            <div>
+              <h2 style="margin:0;font-size:17px;font-weight:600;letter-spacing:-0.015em;">Learner leaderboard</h2>
+              <div style="margin-top:5px;font-size:12.5px;color:#8fb0d4;">{{ repCountLabel }}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+              <span style="font-size:11.5px;color:#6f92ba;">Sorted by completion, then score</span>
+              <button onClick="{{ toggleGaps }}" style="padding:9px 15px;font-family:inherit;font-size:12.5px;font-weight:500;border-radius:9px;cursor:pointer;color:{{ gapsColor }};background:{{ gapsBg }};border:1px solid {{ gapsBorder }};transition:all .16s ease;">Needs action</button>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:56px minmax(160px,1.5fr) minmax(120px,1.2fr) minmax(110px,1.1fr) minmax(100px,1fr) 96px minmax(120px,1.1fr) 62px;gap:12px;padding:12px 26px;font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6f92ba;background:rgba(0,6,18,0.55);border-top:1px solid rgba(28,63,107,0.7);border-bottom:1px solid rgba(28,63,107,0.7);">
+            <div>Rank</div>
+            <div>Learner</div>
+            <div>Rep type</div>
+            <div>Manager</div>
+            <div>Region</div>
+            <div>Status</div>
+            <div>Lesson progress</div>
+            <div style="text-align:right;">Score</div>
+          </div>
+
+          <div style="max-height:620px;overflow-y:auto;">
+            <sc-for list="{{ rows }}" as="r" hint-placeholder-count="12">
+              <div style="display:grid;grid-template-columns:56px minmax(160px,1.5fr) minmax(120px,1.2fr) minmax(110px,1.1fr) minmax(100px,1fr) 96px minmax(120px,1.1fr) 62px;gap:12px;align-items:center;padding:11px 26px;border-bottom:1px solid rgba(28,63,107,0.42);transition:background .14s ease;" style-hover="background:rgba(28,63,107,0.28);">
+                <div>
+                  <span style="display:inline-grid;place-items:center;min-width:26px;height:24px;padding:0 7px;border-radius:7px;font-size:11.5px;font-weight:700;color:{{ r.rankColor }};background:{{ r.rankBg }};font-variant-numeric:tabular-nums;">{{ r.rank }}</span>
+                </div>
+                <div style="min-width:0;">
+                  <div style="font-size:13.5px;font-weight:600;color:#f3f7fc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ r.name }}</div>
+                  <div style="margin-top:2px;font-size:10.5px;color:#5f80a6;font-variant-numeric:tabular-nums;">{{ r.code }}</div>
+                </div>
+                <div style="min-width:0;font-size:11.5px;letter-spacing:0.04em;color:#9dc4ec;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ r.type }}</div>
+                <div style="min-width:0;font-size:12.5px;color:#c9d7e6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ r.manager }}</div>
+                <div style="min-width:0;font-size:12.5px;color:#c9d7e6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ r.region }}</div>
+                <div>
+                  <span style="display:inline-block;padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:600;color:{{ r.statusColor }};background:{{ r.statusBg }};white-space:nowrap;">{{ r.status }}</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;min-width:0;">
+                  <span style="flex:1;height:7px;border-radius:5px;background:rgba(28,63,107,0.85);overflow:hidden;">
+                    <span style="display:block;height:100%;width:{{ r.pctLabel }};border-radius:5px;background:{{ r.barFill }};transition:width .4s ease;"></span>
+                  </span>
+                  <span style="flex:none;font-size:11.5px;color:#9dc4ec;font-variant-numeric:tabular-nums;">{{ r.lessons }}</span>
+                </div>
+                <div style="text-align:right;font-size:13px;font-weight:700;color:{{ r.scoreColor }};font-variant-numeric:tabular-nums;">{{ r.scoreLabel }}</div>
+              </div>
+            </sc-for>
+            <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:48px 26px;text-align:center;font-size:13px;color:#6f92ba;">No learners match these filters.</div>
+            </sc-if>
+          </div>
+        </section>
+      </div>
+    </sc-if>
+
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const MSAL = {
+  clientId: "2e19d14d-6914-4f52-8bbb-119481314eef",
+  tenantId: "cbe83df2-b350-4dab-8d5f-f78d21fe7d27",
+  scopes: ["Sites.Read.All", "Files.Read.All"]
+};
+const REFRESH_MS = 5 * 60 * 1000;
+const ACCENTS = ["#ec6d25", "#8fd6a8", "#7aa8e0", "#f2955c", "#b593e6", "#5fc8c0"];
+
+// The target is 100% — anything short of it is still outstanding, so green is
+// reserved for complete. Amber is close, red is a real gap.
+const pctColor = p => p >= 99.95 ? "#4fdda6" : p >= 70 ? "#f5a524" : "#ef4d5a";
+const barFill = p => p >= 99.95 ? "linear-gradient(90deg,#22a877,#4fdda6)"
+  : p >= 70 ? "linear-gradient(90deg,#c9741c,#f5a524)"
+  : "linear-gradient(90deg,#c23a48,#ef4d5a)";
+const scoreBg = p => p >= 99.95 ? "rgba(47,201,142,0.16)" : p >= 70 ? "rgba(245,165,36,0.18)" : "rgba(239,77,90,0.18)";
+const num = n => Number(n || 0).toLocaleString("en-ZA");
+const one = n => (Math.round(Number(n || 0) * 10) / 10).toFixed(1) + "%";
+
+const STATUS = {
+  passed:     { label: "Passed",      dot: "#2fc98e", short: "PASS",        bg: "rgba(47,201,142,0.16)",  color: "#4fdda6" },
+  failed:     { label: "Failed",      dot: "#ef4d5a", short: "FAIL",        bg: "rgba(239,77,90,0.18)",   color: "#ff7b85" },
+  inprogress: { label: "In progress", dot: "#f5a524", short: "IN PROGRESS", bg: "rgba(245,165,36,0.18)",  color: "#f7bb5c" },
+  notstarted: { label: "Not started", dot: "#49b6dd", short: "NOT STARTED", bg: "rgba(73,182,221,0.16)",  color: "#7fd0ea" },
+  unknown:    { label: "Unrecorded",  dot: "#33506f", short: "—",           bg: "rgba(51,80,111,0.22)",   color: "#7f9dbd" }
+};
+const uniqueBy = (reps, roster, field) => {
+  const seen = {};
+  reps.forEach(r => {
+    const v = (roster[r.name] || {})[field];
+    if (v) seen[v] = true;
+  });
+  return Object.keys(seen).sort();
+};
+
+const statusKey = s => {
+  const t = String(s || "").toLowerCase().replace(/\s+/g, "");
+  return STATUS[t] ? t : "unknown";
+};
+
+class Component extends DCLogic {
+  state = {
+    lib: null, brands: [], data: {}, view: "overview",
+    query: "", gapsOnly: false, region: null, manager: null, repType: null, status: null,
+    mode: "loading", errors: [], lastSync: null, logos: {},
+    authed: false, signedIn: false, signingIn: false, signInError: ""
+  };
+
+  async componentDidMount() {
+    let lib;
+    try { lib = await import("./training-data.js"); }
+    catch (e) { this.setState({ mode: "error" }); return; }
+    this.setState({ lib: lib, brands: lib.BRANDS.slice(), data: lib.SNAPSHOT, mode: "snapshot" });
+    this.connect();
+    this.timer = setInterval(() => { if (this.state.mode === "live") this.refresh(); }, REFRESH_MS);
+  }
+
+  componentWillUnmount() { if (this.timer) clearInterval(this.timer); }
+
+  msal() {
+    if (this._msal) return this._msal;
+    if (typeof msal === "undefined") return null;
+    this._msal = new msal.PublicClientApplication({
+      auth: {
+        clientId: MSAL.clientId,
+        authority: "https://login.microsoftonline.com/" + MSAL.tenantId,
+        redirectUri: window.location.origin + window.location.pathname
+      },
+      cache: { cacheLocation: "sessionStorage" }
+    });
+    return this._msal;
+  }
+
+  // Silent only — the report never shows a sign-in prompt. Whoever opens it is
+  // already signed in to the portal, so either the token is there or we quietly
+  // keep showing the last good read.
+  async token() {
+    const app = this.msal();
+    if (!app) throw new Error("no msal");
+    if (app.handleRedirectPromise) { try { await app.handleRedirectPromise(); } catch (e) { /* not a redirect return */ } }
+    const accounts = app.getAllAccounts();
+    if (!accounts.length) throw new Error("no account");
+    const r = await app.acquireTokenSilent({ scopes: MSAL.scopes, account: accounts[0] });
+    return r.accessToken;
+  }
+
+  async connect() {
+    try {
+      const token = await this.token();
+      this.setState({ authed: true, signedIn: true });
+      await this.refresh(token);
+    } catch (e) { this.setState({ mode: "snapshot" }); }
+  }
+
+  async signOut() {
+    const app = this.msal();
+    const hadSession = this.state.signedIn;
+    this.setState({
+      authed: false, signedIn: false, signInError: "", mode: "snapshot",
+      brands: this.state.lib ? this.state.lib.BRANDS.slice() : [],
+      data: this.state.lib ? this.state.lib.SNAPSHOT : {},
+      view: "overview", region: null, manager: null, repType: null, status: null,
+      query: "", gapsOnly: false, lastSync: null, errors: []
+    });
+    if (!app || !hadSession) return;
+    const account = app.getAllAccounts()[0];
+    try { await app.logoutPopup({ account: account, mainWindowRedirectUri: null }); }
+    catch (e) { /* popup blocked or dismissed — the session is already cleared locally */ }
+  }
+
+  // Interactive sign-in from the login screen.
+  async signIn() {
+    const app = this.msal();
+    if (!app) { this.setState({ signInError: "Sign-in is unavailable in this preview." }); return; }
+    this.setState({ signingIn: true, signInError: "" });
+    try {
+      const r = await app.loginPopup({ scopes: MSAL.scopes });
+      this.setState({ authed: true, signedIn: true, signingIn: false });
+      await this.refresh(r.accessToken);
+    } catch (e) {
+      this.setState({ signingIn: false, signInError: (e && e.message) || "Sign-in failed. Please try again." });
+    }
+  }
+
+  async refresh(tokenIn) {
+    const lib = this.state.lib;
+    if (!lib) return;
+    try {
+      const token = tokenIn || await this.token();
+      const res = await lib.loadAll(token);
+      if (!res.brands.length) throw new Error("nothing readable");
+      const keep = res.brands.some(b => b.key === this.state.view);
+      this.setState({
+        brands: res.brands, data: res.data, errors: res.errors, logos: res.logos || {},
+        view: this.state.view === "overview" || keep ? this.state.view : "overview",
+        mode: "live", lastSync: new Date()
+      });
+    } catch (e) { this.setState({ mode: "snapshot" }); }
+  }
+
+  summary(key) {
+    const m = this.state.data[key];
+    if (!m) return null;
+    const reps = m.reps || [];
+    const total = reps.reduce((s, r) => s + r.total, 0);
+    const done = reps.reduce((s, r) => s + r.done, 0);
+    const ws = reps.reduce((s, r) => s + (r.done > 0 ? r.score * r.done : 0), 0);
+    const counts = { passed: 0, failed: 0, notstarted: 0, inprogress: 0, unknown: 0 };
+    reps.forEach(r => { counts[statusKey(r.status)]++; });
+    return {
+      assignments: reps.length, total: total, done: done,
+      completion: total ? (done / total) * 100 : 0,
+      aveScore: done ? ws / done : 0,
+      passRate: reps.length ? (counts.passed / reps.length) * 100 : 0,
+      counts: counts,
+      needAction: counts.failed + counts.notstarted + counts.inprogress
+    };
+  }
+
+  model(key) {
+    const { brands, data } = this.state;
+    if (key !== "overview") return data[key] || { reps: [], roster: {}, regions: {}, managers: {} };
+    const reps = {}, roster = {};
+    brands.forEach(b => {
+      const m = data[b.key];
+      if (!m) return;
+      m.reps.forEach(r => {
+        const o = reps[r.name] || (reps[r.name] = { name: r.name, total: 0, done: 0, ws: 0, wb: 0 });
+        o.total += r.total; o.done += r.done;
+        if (r.done > 0) { o.ws += r.score * r.done; o.wb += r.done; }
+      });
+      Object.keys(m.roster || {}).forEach(n => { if (!roster[n]) roster[n] = m.roster[n]; });
+    });
+    const list = Object.keys(reps).map(n => {
+      const o = reps[n];
+      return { name: n, total: o.total, done: o.done, score: o.wb ? o.ws / o.wb : 0, status: "" };
+    });
+    return { reps: list, roster: roster, regions: {}, managers: {} };
+  }
+
+  renderVals() {
+    const st = this.state;
+    const isOverview = st.view === "overview";
+
+    // Newest programme first — by course start date, then by when the workbook was
+    // last touched, so a newly dropped module surfaces at the top of the sidebar.
+    const recency = x => (st.data[x.brand.key] || {}).start || (x.brand.modified || "").slice(0, 10) || "";
+    const modules = st.brands.map((b, i) => ({ brand: b, s: this.summary(b.key), accent: ACCENTS[i % ACCENTS.length] }))
+      .filter(x => x.s)
+      .sort((a, b) => recency(b).localeCompare(recency(a)) || a.brand.name.localeCompare(b.brand.name));
+
+    const tot = modules.reduce((a, x) => ({
+      assignments: a.assignments + x.s.assignments,
+      total: a.total + x.s.total, done: a.done + x.s.done,
+      passed: a.passed + x.s.counts.passed, failed: a.failed + x.s.counts.failed,
+      notstarted: a.notstarted + x.s.counts.notstarted, inprogress: a.inprogress + x.s.counts.inprogress,
+      unknown: a.unknown + x.s.counts.unknown, ws: a.ws + x.s.aveScore * x.s.done
+    }), { assignments: 0, total: 0, done: 0, passed: 0, failed: 0, notstarted: 0, inprogress: 0, unknown: 0, ws: 0 });
+
+    const learnerSet = {};
+    modules.forEach(x => {
+      const mm = st.data[x.brand.key];
+      if (mm) mm.reps.forEach(r => { learnerSet[r.name] = true; });
+    });
+    const distinctLearners = Object.keys(learnerSet).length;
+
+    const pCompletion = tot.total ? (tot.done / tot.total) * 100 : 0;
+    const pScore = tot.done ? tot.ws / tot.done : 0;
+    const pPass = tot.assignments ? (tot.passed / tot.assignments) * 100 : 0;
+    const needAction = tot.failed + tot.notstarted + tot.inprogress;
+
+    // ---- active module scope
+    const m = this.model(st.view);
+    const roster = m.roster || {};
+    const q = st.query.trim().toLowerCase();
+    // Everything except search: the KPIs, donut and both leaderboards read this,
+    // so the numbers always describe what the filters say.
+    const inScope = m.reps.filter(r => {
+      const t = roster[r.name] || {};
+      if (st.region && t.region !== st.region) return false;
+      if (st.manager && t.manager !== st.manager) return false;
+      if (st.repType && (t.type || "Unassigned") !== st.repType) return false;
+      if (st.status && statusKey(r.status) !== st.status) return false;
+      return true;
+    });
+    const ranked = inScope.slice().sort((a, b) => {
+      const pa = a.total ? a.done / a.total : 0, pb = b.total ? b.done / b.total : 0;
+      return (pb - pa) || (b.score - a.score) || a.name.localeCompare(b.name);
+    });
+    const rankOf = {};
+    ranked.forEach((r, i) => { rankOf[r.name] = i + 1; });
+    let rows = ranked;
+    if (st.gapsOnly) rows = rows.filter(r => statusKey(r.status) !== "passed" || r.done < r.total);
+    if (q) rows = rows.filter(r => {
+      const t = roster[r.name] || {};
+      return (r.name + " " + (t.manager || "") + " " + (t.region || "") + " " + (t.type || "")).toLowerCase().indexOf(q) > -1;
+    });
+
+    const sTotal = inScope.reduce((s, r) => s + r.total, 0);
+    const sDone = inScope.reduce((s, r) => s + r.done, 0);
+    const sPct = sTotal ? Math.round((sDone / sTotal) * 100) : 0;
+    const sWs = inScope.reduce((s, r) => s + (r.done > 0 ? r.score * r.done : 0), 0);
+    const sScore = sDone ? sWs / sDone : 0;
+    const statusScope = m.reps.filter(r => {
+      const t = roster[r.name] || {};
+      if (st.region && t.region !== st.region) return false;
+      if (st.manager && t.manager !== st.manager) return false;
+      if (st.repType && (t.type || "Unassigned") !== st.repType) return false;
+      return true;
+    });
+    const sCounts = { passed: 0, failed: 0, notstarted: 0, inprogress: 0, unknown: 0 };
+    statusScope.forEach(r => { sCounts[statusKey(r.status)]++; });
+    const vCounts = { passed: 0, failed: 0, notstarted: 0, inprogress: 0, unknown: 0 };
+    inScope.forEach(r => { vCounts[statusKey(r.status)]++; });
+    const sPassed = vCounts.passed;
+    const sNotStarted = vCounts.notstarted;
+    const sAction = vCounts.failed + vCounts.notstarted + vCounts.inprogress;
+
+    const groupList = (table, field) => Object.keys(table || {}).map(k => {
+      const v = table[k], pct = v[0] ? Math.round((v[1] / v[0]) * 100) : 0, sc = Math.round(v[2]);
+      const active = st[field] === k;
+      return {
+        name: k, pct: pct, lessons: num(v[1]) + " / " + num(v[0]),
+        pctLabel: pct + "%", pctColor: pctColor(pct), barFill: barFill(pct),
+        scoreLabel: sc + "% test", scoreColor: pctColor(sc), scoreBg: scoreBg(sc),
+        bg: active ? "rgba(236,109,37,0.14)" : "transparent",
+        border: active ? "rgba(236,109,37,0.6)" : "transparent",
+        select: () => this.setState({ [field]: active ? null : k })
+      };
+    }).sort((a, b) => b.pct - a.pct || a.name.localeCompare(b.name));
+
+    // Manager rollup: pass rate first, completion as the tie-break.
+    const mgrTable = {};
+    inScope.forEach(r => {
+      const k = (roster[r.name] || {}).manager;
+      if (!k) return;
+      const o = mgrTable[k] || (mgrTable[k] = { learners: 0, passed: 0, total: 0, done: 0 });
+      o.learners++; o.total += r.total; o.done += r.done;
+      if (statusKey(r.status) === "passed") o.passed++;
+    });
+
+    // Region rollup over the filtered scope, so the bars track the filter bar.
+    const rollScope = field => {
+      const out = {};
+      inScope.forEach(rep => {
+        const k = (roster[rep.name] || {})[field];
+        if (!k) return;
+        const o = out[k] || (out[k] = [0, 0, 0, 0]);
+        o[0] += rep.total; o[1] += rep.done;
+        if (rep.done > 0) { o[2] += rep.score * rep.done; o[3] += rep.done; }
+      });
+      Object.keys(out).forEach(k => { out[k] = [out[k][0], out[k][1], out[k][3] ? out[k][2] / out[k][3] : 0]; });
+      return out;
+    };
+
+    const typeTable = {};
+    inScope.forEach(r => {
+      const k = (roster[r.name] || {}).type || "Unassigned";
+      const o = typeTable[k] || (typeTable[k] = [0, 0]);
+      o[0] += r.total; o[1] += r.done;
+    });
+
+    const meta = st.data[st.view] || {};
+    const busy = st.mode === "loading" || st.mode === "syncing";
+    const stamp = st.lastSync
+      ? st.lastSync.toLocaleString("en-ZA", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }).replace(",", " ·")
+      : null;
+
+    // Group modules under their client. Order of first appearance, so P&G stays put
+    // as new clients are appended to CLIENTS.
+    const groupOrder = [], grouped = {};
+    modules.forEach(x => {
+      const c = x.brand.client || "Other";
+      if (!grouped[c]) { grouped[c] = []; groupOrder.push(c); }
+      grouped[c].push(x);
+    });
+
+    const navButton = x => {
+      const active = x.brand.key === st.view;
+      return {
+        label: x.brand.name,
+        sub: (st.data[x.brand.key] || {}).start
+          ? new Date((st.data[x.brand.key] || {}).start).toLocaleDateString("en-ZA", { month: "short", year: "numeric" })
+          : ((st.data[x.brand.key] || {}).code || x.brand.eyebrow),
+        pct: Math.round(x.s.completion) + "%",
+        color: active ? "#f3f7fc" : "#c9d7e6",
+        pctColor: active ? "#f2955c" : "#5f80a6",
+        bg: active ? "rgba(236,109,37,0.14)" : "transparent",
+        border: active ? "rgba(236,109,37,0.5)" : "transparent",
+        select: () => this.setState({ view: x.brand.key, region: null, manager: null, repType: null, status: null, query: "", gapsOnly: false })
+      };
+    };
+
+    const statusOrder = ["passed", "failed", "notstarted", "inprogress", "unknown"];
+    const anyFilter = !!(st.region || st.manager || st.repType || st.status || st.query || st.gapsOnly);
+
+    const liveStatuses = statusOrder.filter(k => sCounts[k] > 0);
+
+    return {
+      syncState: busy ? "Refreshing…" : st.mode === "live" ? "Live" : "Offline snapshot",
+      syncDot: busy ? "#f2955c" : st.mode === "live" ? "#8fd6a8" : "#6f92ba",
+      showLogin: !st.authed,
+      canExit: st.authed,
+      exitLabel: st.signedIn ? "Sign out" : "Back to sign in",
+      signOut: () => this.signOut(),
+      signIn: () => { if (!st.signingIn) this.signIn(); },
+      signInLabel: st.signingIn ? "Signing in…" : "Sign in with Microsoft",
+      signInError: st.signInError,
+      browseSample: () => this.setState({ authed: true }),
+
+      lastRefreshed: stamp ? "Last refreshed " + stamp : "Not yet refreshed",
+      refreshLabel: busy ? "Working…" : st.mode === "live" ? "Refresh now" : "Connect",
+      doRefresh: () => { if (!busy) { st.mode === "live" ? this.refresh() : this.tryConnect(false); } },
+
+      ovPct: Math.round(pCompletion) + "%",
+      ovColor: isOverview ? "#f3f7fc" : "#c9d7e6",
+      ovPctColor: isOverview ? "#f2955c" : "#5f80a6",
+      ovBg: isOverview ? "rgba(236,109,37,0.14)" : "transparent",
+      ovBorder: isOverview ? "rgba(236,109,37,0.5)" : "transparent",
+      ovSelect: () => this.setState({ view: "overview", region: null, manager: null, repType: null, status: null, query: "", gapsOnly: false }),
+
+      navGroups: groupOrder.map(c => ({ client: c, items: grouped[c].map(navButton) })),
+
+      isOverview: isOverview,
+      isModule: !isOverview,
+      backToOverview: () => this.setState({ view: "overview", region: null, manager: null, repType: null, status: null, query: "", gapsOnly: false }),
+
+      moduleCountLabel: modules.length + (modules.length === 1 ? " module" : " modules"),
+
+      portfolioKpis: [
+        { label: "Learners", value: num(distinctLearners), color: "#f3f7fc", note: num(tot.assignments) + " assignments across " + modules.length + " modules" },
+        { label: "Overall pass rate", value: one(pPass), color: pctColor(pPass), note: num(tot.passed) + " passed assignments" },
+        { label: "Lesson completion", value: one(pCompletion), color: pctColor(pCompletion), note: num(tot.done) + " of " + num(tot.total) + " lessons" },
+        { label: "Average score", value: one(pScore), color: pctColor(pScore), note: "Completed assessments" }
+      ],
+
+      moduleCards: modules.map(x => ({
+        name: x.brand.name, eyebrow: x.brand.eyebrow, client: x.brand.client || "", accent: x.accent,
+        passRate: one(x.s.passRate), passColor: pctColor(x.s.passRate),
+        completion: Math.round(x.s.completion) + "%", compColor: pctColor(x.s.completion),
+        aveScore: one(x.s.aveScore), barFill: barFill(x.s.completion),
+        footer: x.s.counts.passed + " passed · " + x.s.needAction + " require action",
+        open: () => this.setState({ view: x.brand.key, region: null, manager: null, repType: null, status: null, query: "", gapsOnly: false })
+      })),
+
+      chartBars: modules.slice().sort((a, b) => b.s.passRate - a.s.passRate).map(x => ({
+        label: (st.data[x.brand.key] || {}).course || x.brand.name,
+        value: one(x.s.passRate), color: pctColor(x.s.passRate),
+        height: Math.max(3, Math.round(x.s.passRate * 0.72)) + "%", fill: barFill(x.s.passRate),
+        detail: num(x.s.counts.passed) + "/" + num(x.s.assignments),
+        open: () => this.setState({ view: x.brand.key, region: null, manager: null, repType: null, status: null, query: "", gapsOnly: false })
+      })),
+
+      statusRows: statusOrder.map(k => ({
+        label: STATUS[k].label, dot: STATUS[k].dot, count: num(tot[k]),
+        pct: tot.assignments ? Math.round((tot[k] / tot.assignments) * 100) + "%" : "0%"
+      })).filter(r => r.count !== "0"),
+
+      followUpTitle: needAction + " assignment" + (needAction === 1 ? "" : "s") + " need follow-up",
+      followUpBody: tot.failed > 0
+        ? "Prioritise the " + tot.failed + " failed learner" + (tot.failed === 1 ? "" : "s") + ", then the " + tot.notstarted + " who have not started, before module deadlines."
+        : "Chase the " + tot.notstarted + " learners who have not started before their module deadlines.",
+
+      // ---- module view
+      moduleTitle: (st.brands.filter(b => b.key === st.view)[0] || {}).name || "Module",
+      moduleClient: (st.brands.filter(b => b.key === st.view)[0] || {}).client || "",
+      moduleSubtitle: [meta.course, meta.code, meta.start ? meta.start + " to " + meta.end : ""].filter(Boolean).join(" · ")
+        || inScope.length + " learners",
+
+      kpis: [
+        { label: "Assigned learners", value: num(inScope.length), color: "#f3f7fc", accent: "#4f8fd6", note: "In current filter view" },
+        { label: "Passed", value: num(sPassed), color: "#f3f7fc", accent: "#6cc48c", note: inScope.length ? Math.round((sPassed / inScope.length) * 100) + "% of learners" : "No learners in view" },
+        { label: "Lessons completed", value: sPct + "%", color: pctColor(sPct), accent: "#3fb6c6", note: num(sDone) + " of " + num(sTotal) + " lessons" },
+        { label: "Average test score", value: one(sScore), color: "#f3f7fc", accent: "#8b7ad6", note: "Among completed assessments" },
+        { label: "Action required", value: num(sAction), color: sAction ? "#f2955c" : "#8fd6a8", accent: "#ec6d25", note: "Not started, in progress or failed" }
+      ],
+
+      // ---- filter bar
+      query: st.query,
+      onQuery: e => this.setState({ query: e.target.value }),
+      filterSelects: [
+        { field: "region", all: "All regions", values: uniqueBy(m.reps, roster, "region") },
+        { field: "manager", all: "All managers", values: uniqueBy(m.reps, roster, "manager") },
+        { field: "repType", all: "All rep types", values: uniqueBy(m.reps, roster, "type") },
+        { field: "status", all: "All statuses", values: statusOrder.filter(k => m.reps.some(r => statusKey(r.status) === k)), labels: STATUS }
+      ].map(cfg => ({
+        value: st[cfg.field] == null ? "" : st[cfg.field],
+        border: st[cfg.field] ? "#ec6d25" : "rgba(28,63,107,0.9)",
+        onChange: e => this.setState({ [cfg.field]: e.target.value || null }),
+        options: [{ value: "", label: cfg.all }].concat(cfg.values.map(v => ({
+          value: v, label: cfg.labels ? cfg.labels[v].label : v
+        })))
+      })),
+      hasFilters: !!(st.region || st.manager || st.repType || st.status || st.query || st.gapsOnly),
+      resetColor: anyFilter ? "#1a1005" : "#f2955c",
+      resetBg: anyFilter ? "linear-gradient(135deg,#f2955c,#ec6d25)" : "rgba(236,109,37,0.14)",
+      resetBorder: anyFilter ? "#ec6d25" : "rgba(236,109,37,0.5)",
+      clearAll: () => this.setState({ region: null, manager: null, repType: null, status: null, query: "", gapsOnly: false }),
+
+      // ---- learning status band
+      donutTotal: num(statusScope.length),
+      statusBand: liveStatuses.map(k => ({
+        color: STATUS[k].dot,
+        width: (statusScope.length ? (sCounts[k] / statusScope.length) * 100 : 0) + "%"
+      })),
+      donutLegend: liveStatuses.map(k => {
+        const active = st.status === k;
+        return {
+          label: STATUS[k].label, color: STATUS[k].dot, count: num(sCounts[k]),
+          pct: statusScope.length ? Math.round((sCounts[k] / statusScope.length) * 100) + "%" : "0%",
+          bg: active ? "rgba(236,109,37,0.14)" : "rgba(0,6,18,0.6)",
+          border: active ? "#ec6d25" : "rgba(28,63,107,0.9)",
+          select: () => this.setState({ status: active ? null : k })
+        };
+      }),
+
+      // ---- completion by region
+      regionBars: groupList(rollScope("region"), "region"),
+
+      // ---- manager leaderboard
+      managerBoard: Object.keys(mgrTable).map(k => {
+        const v = mgrTable[k];
+        const pass = v.learners ? (v.passed / v.learners) * 100 : 0;
+        const comp = v.total ? (v.done / v.total) * 100 : 0;
+        const active = st.manager === k;
+        return {
+          name: k, pass: pass, comp: comp,
+          passLabel: Math.round(pass) + "%", passColor: pctColor(pass), barFill: barFill(pass),
+          bg: active ? "rgba(236,109,37,0.14)" : "transparent",
+          border: active ? "rgba(236,109,37,0.6)" : "transparent",
+          select: () => this.setState({ manager: active ? null : k })
+        };
+      }).sort((a, b) => b.pass - a.pass || b.comp - a.comp || a.name.localeCompare(b.name))
+        .map((g, i) => Object.assign(g, {
+          rank: i + 1, rankColor: i < 3 ? "#f2955c" : "#6f92ba"
+        })),
+
+      // ---- learner leaderboard
+      toggleGaps: () => this.setState({ gapsOnly: !st.gapsOnly }),
+      gapsBg: st.gapsOnly ? "rgba(236,109,37,0.16)" : "rgba(0,6,18,0.8)",
+      gapsBorder: st.gapsOnly ? "#ec6d25" : "rgba(28,63,107,0.9)",
+      gapsColor: st.gapsOnly ? "#f2955c" : "#9dc4ec",
+      repCountLabel: "Showing " + rows.length + " of " + m.reps.length + " learners",
+      isEmpty: rows.length === 0,
+      rows: rows.map(r => {
+        const t = roster[r.name] || {};
+        const pct = r.total ? Math.round((r.done / r.total) * 100) : 0;
+        const rank = rankOf[r.name];
+        const sk = STATUS[statusKey(r.status)];
+        return {
+          name: r.name, code: r.code || "—", rank: rank,
+          rankColor: rank <= 3 ? "#f2955c" : "#9dc4ec",
+          rankBg: rank <= 3 ? "rgba(236,109,37,0.16)" : "rgba(28,63,107,0.55)",
+          type: t.type || "—", manager: t.manager || "—", region: t.region || "—",
+          status: sk.label, statusColor: sk.color, statusBg: sk.bg,
+          lessons: r.done + "/" + r.total,
+          pctLabel: pct + "%", barFill: barFill(pct),
+          scoreLabel: r.done > 0 ? Math.round(r.score) + "%" : "—",
+          scoreColor: r.done > 0 ? pctColor(r.score) : "#5f80a6"
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>
