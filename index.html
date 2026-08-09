@@ -164,7 +164,7 @@
     </div>
   </aside>
 
-  <main id="hubMain" style="position:relative;z-index:1;flex:1;min-width:0;padding:22px clamp(22px,3vw,46px) 60px;">
+  <main id="hubMain" style="position:relative;z-index:1;flex:1;min-width:0;padding:14px clamp(22px,3vw,46px) 60px;">
 
     <sc-if value="{{ isOverview }}" hint-placeholder-val="{{ true }}">
       <div>
@@ -265,90 +265,90 @@
       <div>
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;">
           <div>
-            <button onClick="{{ backToOverview }}" style="display:flex;align-items:center;gap:7px;padding:0;margin-bottom:8px;font-family:inherit;font-size:12px;color:#8fb0d4;background:none;border:none;cursor:pointer;" style-hover="color:#f2955c;">&larr; Learning Performance Overview</button>
-            <h1 style="margin:0;font-size:clamp(21px,2.3vw,27px);font-weight:700;letter-spacing:-0.025em;line-height:1.06;">{{ moduleTitle }}</h1>
-            <p style="margin:5px 0 0;font-size:13px;color:#9dc4ec;line-height:1.4;max-width:660px;text-wrap:pretty;">{{ moduleSubtitle }}</p>
+            <button onClick="{{ backToOverview }}" style="display:flex;align-items:center;gap:7px;padding:0;margin-bottom:5px;font-family:inherit;font-size:11.5px;color:#8fb0d4;background:none;border:none;cursor:pointer;" style-hover="color:#f2955c;">&larr; Learning Performance Overview</button>
+            <h1 style="margin:0;font-size:clamp(18px,2vw,22px);font-weight:700;letter-spacing:-0.025em;line-height:1.05;">{{ moduleTitle }}</h1>
+            <p style="margin:3px 0 0;font-size:12px;color:#9dc4ec;line-height:1.3;max-width:660px;text-wrap:pretty;">{{ moduleSubtitle }}</p>
           </div>
         </div>
 
-        <div style="display:flex;align-items:center;gap:11px;flex-wrap:wrap;margin-top:14px;padding:10px 14px;border-radius:14px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.48);">
-          <input value="{{ query }}" onChange="{{ onQuery }}" placeholder="Search learner, code or manager…" style="flex:1;min-width:230px;padding:10px 14px;font-family:inherit;font-size:13px;color:#f3f7fc;background:rgba(0,6,18,0.8);border:1px solid rgba(28,63,107,0.9);border-radius:10px;outline:none;" style-focus="border-color:#ec6d25;">
+        <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:8px;padding:7px 12px;border-radius:12px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.48);">
+          <input value="{{ query }}" onChange="{{ onQuery }}" placeholder="Search learner, code or manager…" style="flex:1;min-width:230px;padding:7px 12px;font-family:inherit;font-size:12.5px;color:#f3f7fc;background:rgba(0,6,18,0.8);border:1px solid rgba(28,63,107,0.9);border-radius:9px;outline:none;" style-focus="border-color:#ec6d25;">
           <sc-for list="{{ filterSelects }}" as="s" hint-placeholder-count="4">
-            <select value="{{ s.value }}" onChange="{{ s.onChange }}" style="min-width:150px;padding:10px 12px;font-family:inherit;font-size:13px;color:#f3f7fc;background:rgba(0,6,18,0.8);border:1px solid {{ s.border }};border-radius:10px;outline:none;cursor:pointer;" style-focus="border-color:#ec6d25;">
+            <select value="{{ s.value }}" onChange="{{ s.onChange }}" style="min-width:150px;padding:7px 10px;font-family:inherit;font-size:12.5px;color:#f3f7fc;background:rgba(0,6,18,0.8);border:1px solid {{ s.border }};border-radius:9px;outline:none;cursor:pointer;" style-focus="border-color:#ec6d25;">
               <sc-for list="{{ s.options }}" as="o" hint-placeholder-count="3">
                 <option value="{{ o.value }}" style="background:#04162e;color:#f3f7fc;">{{ o.label }}</option>
               </sc-for>
             </select>
           </sc-for>
-          <button onClick="{{ clearAll }}" style="padding:10px 18px;font-family:inherit;font-size:12.5px;font-weight:600;border-radius:10px;cursor:pointer;color:{{ resetColor }};background:{{ resetBg }};border:1px solid {{ resetBorder }};transition:all .16s ease;">Reset</button>
+          <button onClick="{{ clearAll }}" style="padding:7px 15px;font-family:inherit;font-size:12px;font-weight:600;border-radius:9px;cursor:pointer;color:{{ resetColor }};background:{{ resetBg }};border:1px solid {{ resetBorder }};transition:all .16s ease;">Reset</button>
         </div>
 
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));gap:12px;margin-top:12px;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));gap:8px;margin-top:8px;">
           <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="5">
-            <div style="position:relative;padding:13px 16px 14px 18px;border-radius:14px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.5);overflow:hidden;">
+            <div style="position:relative;padding:9px 14px 10px 16px;border-radius:12px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.5);overflow:hidden;">
               <span style="position:absolute;left:0;top:0;bottom:0;width:4px;background:{{ k.accent }};"></span>
-              <div style="font-size:10px;font-weight:600;letter-spacing:0.15em;color:#8fb0d4;text-transform:uppercase;">{{ k.label }}</div>
-              <div style="margin-top:7px;font-size:25px;font-weight:700;letter-spacing:-0.03em;line-height:1;color:{{ k.color }};">{{ k.value }}</div>
-              <div style="margin-top:5px;font-size:11.5px;color:#9dc4ec;line-height:1.4;">{{ k.note }}</div>
+              <div style="font-size:9.5px;font-weight:600;letter-spacing:0.13em;color:#8fb0d4;text-transform:uppercase;">{{ k.label }}</div>
+              <div style="margin-top:4px;font-size:20px;font-weight:700;letter-spacing:-0.03em;line-height:1;color:{{ k.color }};">{{ k.value }}</div>
+              <div style="margin-top:3px;font-size:11px;color:#9dc4ec;line-height:1.3;">{{ k.note }}</div>
             </div>
           </sc-for>
         </div>
 
-        <section style="margin-top:12px;padding:13px 20px 15px;border-radius:14px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.5);">
+        <section style="margin-top:8px;padding:9px 16px 11px;border-radius:12px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.5);">
           <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;">
             <div>
-              <h2 style="margin:0;font-size:15px;font-weight:600;letter-spacing:-0.015em;">Learning status</h2>
-              <div style="margin-top:3px;font-size:12px;color:#8fb0d4;">Current learner journey distribution &middot; click a status to filter</div>
+              <h2 style="margin:0;font-size:13px;font-weight:600;letter-spacing:-0.015em;">Learning status</h2>
+              <div style="margin-top:2px;font-size:11px;color:#8fb0d4;">Current learner journey distribution &middot; click a status to filter</div>
             </div>
-            <div style="font-size:12.5px;color:#8fb0d4;"><span style="font-size:18px;font-weight:700;color:#f3f7fc;letter-spacing:-0.02em;">{{ donutTotal }}</span> learners in view</div>
+            <div style="font-size:12px;color:#8fb0d4;"><span style="font-size:16px;font-weight:700;color:#f3f7fc;letter-spacing:-0.02em;">{{ donutTotal }}</span> learners in view</div>
           </div>
-          <div style="display:flex;gap:3px;height:14px;margin-top:10px;border-radius:9px;overflow:hidden;background:rgba(28,63,107,0.6);">
+          <div style="display:flex;gap:3px;height:12px;margin-top:6px;border-radius:8px;overflow:hidden;background:rgba(28,63,107,0.6);">
             <sc-for list="{{ statusBand }}" as="s" hint-placeholder-count="3">
               <div style="width:{{ s.width }};min-width:5px;background:{{ s.color }};transition:width .5s ease;"></div>
             </sc-for>
           </div>
-          <div style="display:flex;gap:11px;flex-wrap:wrap;margin-top:10px;">
+          <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:6px;">
             <sc-for list="{{ donutLegend }}" as="l" hint-placeholder-count="3">
-              <button onClick="{{ l.select }}" style="display:flex;align-items:center;gap:9px;padding:8px 14px;font-family:inherit;border-radius:10px;cursor:pointer;background:{{ l.bg }};border:1px solid {{ l.border }};transition:background .14s ease;" style-hover="background:rgba(28,63,107,0.4);">
-                <span style="flex:none;width:9px;height:9px;border-radius:50%;background:{{ l.color }};"></span>
-                <span style="font-size:12.5px;color:#e4edf7;">{{ l.label }}</span>
-                <span style="font-size:14px;font-weight:700;color:#f3f7fc;font-variant-numeric:tabular-nums;">{{ l.count }}</span>
-                <span style="font-size:11.5px;color:#7ba0c8;font-variant-numeric:tabular-nums;">{{ l.pct }}</span>
+              <button onClick="{{ l.select }}" style="display:flex;align-items:center;gap:7px;padding:6px 11px;font-family:inherit;border-radius:9px;cursor:pointer;background:{{ l.bg }};border:1px solid {{ l.border }};transition:background .14s ease;" style-hover="background:rgba(28,63,107,0.4);">
+                <span style="flex:none;width:8px;height:8px;border-radius:50%;background:{{ l.color }};"></span>
+                <span style="font-size:12px;color:#e4edf7;">{{ l.label }}</span>
+                <span style="font-size:13px;font-weight:700;color:#f3f7fc;font-variant-numeric:tabular-nums;">{{ l.count }}</span>
+                <span style="font-size:11px;color:#7ba0c8;font-variant-numeric:tabular-nums;">{{ l.pct }}</span>
               </button>
             </sc-for>
           </div>
         </section>
 
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:14px;margin-top:12px;align-items:stretch;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:10px;margin-top:8px;align-items:stretch;">
 
-          <section style="display:flex;flex-direction:column;padding:15px 18px 17px;border-radius:14px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 20px 46px rgba(0,4,12,0.52);">
-            <h2 style="margin:0;font-size:15px;font-weight:600;letter-spacing:-0.015em;">Completion by region</h2>
-            <div style="margin-top:3px;font-size:12px;color:#8fb0d4;">Lessons completed as a share of lessons assigned</div>
-            <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:7px;margin-top:10px;">
+          <section style="display:flex;flex-direction:column;padding:11px 15px 13px;border-radius:12px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 20px 46px rgba(0,4,12,0.52);">
+            <h2 style="margin:0;font-size:13px;font-weight:600;letter-spacing:-0.015em;">Completion by region</h2>
+            <div style="margin-top:2px;font-size:11px;color:#8fb0d4;">Lessons completed as a share of lessons assigned</div>
+            <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:4px;margin-top:6px;">
               <sc-for list="{{ regionBars }}" as="g" hint-placeholder-count="8">
-                <button onClick="{{ g.select }}" style="display:grid;grid-template-columns:minmax(104px,1fr) minmax(0,2.4fr) 46px;gap:12px;align-items:center;width:100%;padding:6px 9px;margin:0 -9px;font-family:inherit;text-align:left;background:{{ g.bg }};border:1px solid {{ g.border }};border-radius:9px;cursor:pointer;transition:background .14s ease;" style-hover="background:rgba(28,63,107,0.3);">
-                  <span style="min-width:0;font-size:12.5px;color:#e4edf7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ g.name }}</span>
-                  <span style="display:block;height:9px;border-radius:6px;background:rgba(28,63,107,0.85);overflow:hidden;">
-                    <span style="display:block;height:100%;width:{{ g.pctLabel }};border-radius:6px;background:{{ g.barFill }};transition:width .5s ease;"></span>
+                <button onClick="{{ g.select }}" style="display:grid;grid-template-columns:minmax(104px,1fr) minmax(0,2.4fr) 46px;gap:12px;align-items:center;width:100%;padding:4px 8px;margin:0 -8px;font-family:inherit;text-align:left;background:{{ g.bg }};border:1px solid {{ g.border }};border-radius:8px;cursor:pointer;transition:background .14s ease;" style-hover="background:rgba(28,63,107,0.3);">
+                  <span style="min-width:0;font-size:11.5px;color:#e4edf7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ g.name }}</span>
+                  <span style="display:block;height:8px;border-radius:5px;background:rgba(28,63,107,0.85);overflow:hidden;">
+                    <span style="display:block;height:100%;width:{{ g.pctLabel }};border-radius:5px;background:{{ g.barFill }};transition:width .5s ease;"></span>
                   </span>
-                  <span style="text-align:right;font-size:12.5px;font-weight:700;color:{{ g.pctColor }};font-variant-numeric:tabular-nums;">{{ g.pctLabel }}</span>
+                  <span style="text-align:right;font-size:11.5px;font-weight:700;color:{{ g.pctColor }};font-variant-numeric:tabular-nums;">{{ g.pctLabel }}</span>
                 </button>
               </sc-for>
             </div>
           </section>
 
-          <section style="display:flex;flex-direction:column;padding:15px 17px 16px;border-radius:14px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 20px 46px rgba(0,4,12,0.52);">
-            <h2 style="margin:0;font-size:15px;font-weight:600;letter-spacing:-0.015em;">Manager leaderboard</h2>
-            <div style="margin-top:3px;font-size:12px;color:#8fb0d4;">Ranked by learner pass rate, then completion</div>
-            <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:7px;margin-top:10px;">
+          <section style="display:flex;flex-direction:column;padding:11px 14px 12px;border-radius:12px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 20px 46px rgba(0,4,12,0.52);">
+            <h2 style="margin:0;font-size:13px;font-weight:600;letter-spacing:-0.015em;">Manager leaderboard</h2>
+            <div style="margin-top:2px;font-size:11px;color:#8fb0d4;">Ranked by learner pass rate, then completion</div>
+            <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:4px;margin-top:6px;">
               <sc-for list="{{ managerBoard }}" as="g" hint-placeholder-count="10">
-                <button onClick="{{ g.select }}" style="display:grid;grid-template-columns:22px minmax(104px,1fr) minmax(0,2.4fr) 46px;gap:12px;align-items:center;width:100%;padding:6px 9px;margin:0 -9px;font-family:inherit;text-align:left;background:{{ g.bg }};border:1px solid {{ g.border }};border-radius:9px;cursor:pointer;transition:background .14s ease;" style-hover="background:rgba(28,63,107,0.3);">
-                  <span style="font-size:11px;font-weight:700;color:{{ g.rankColor }};font-variant-numeric:tabular-nums;">{{ g.rank }}</span>
-                  <span style="min-width:0;font-size:12.5px;color:#e4edf7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ g.name }}</span>
-                  <span style="display:block;height:9px;border-radius:6px;background:rgba(28,63,107,0.85);overflow:hidden;">
-                    <span style="display:block;height:100%;width:{{ g.passLabel }};border-radius:6px;background:{{ g.barFill }};transition:width .5s ease;"></span>
+                <button onClick="{{ g.select }}" style="display:grid;grid-template-columns:22px minmax(104px,1fr) minmax(0,2.4fr) 46px;gap:12px;align-items:center;width:100%;padding:4px 8px;margin:0 -8px;font-family:inherit;text-align:left;background:{{ g.bg }};border:1px solid {{ g.border }};border-radius:8px;cursor:pointer;transition:background .14s ease;" style-hover="background:rgba(28,63,107,0.3);">
+                  <span style="font-size:10.5px;font-weight:700;color:{{ g.rankColor }};font-variant-numeric:tabular-nums;">{{ g.rank }}</span>
+                  <span style="min-width:0;font-size:11.5px;color:#e4edf7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ g.name }}</span>
+                  <span style="display:block;height:8px;border-radius:5px;background:rgba(28,63,107,0.85);overflow:hidden;">
+                    <span style="display:block;height:100%;width:{{ g.passLabel }};border-radius:5px;background:{{ g.barFill }};transition:width .5s ease;"></span>
                   </span>
-                  <span style="text-align:right;font-size:12.5px;font-weight:700;color:{{ g.passColor }};font-variant-numeric:tabular-nums;">{{ g.passLabel }}</span>
+                  <span style="text-align:right;font-size:11.5px;font-weight:700;color:{{ g.passColor }};font-variant-numeric:tabular-nums;">{{ g.passLabel }}</span>
                 </button>
               </sc-for>
             </div>
