@@ -29,11 +29,11 @@
     #hubShell{display:block !important;}
     #hubSidebar{position:relative !important;width:100% !important;height:auto !important;border-right:0 !important;border-bottom:1px solid rgba(28,63,107,0.9);}
     #hubSidebar nav{display:grid !important;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));max-height:none !important;}
-    #hubMain{padding:26px 16px 44px !important;}
+    #hubMain{padding:18px 16px 44px !important;}
   }
   @media(max-width:560px){
     #hubSidebar nav{grid-template-columns:1fr !important;}
-    #hubMain{padding:22px 12px 38px !important;}
+    #hubMain{padding:14px 12px 38px !important;}
   }
 </style>
 </helmet>
@@ -101,8 +101,6 @@
 
         <div style="margin-top:12px;min-height:16px;font-size:12px;line-height:1.5;color:#ff8f6b;text-align:center;">{{ signInError }}</div>
 
-        <button onClick="{{ browseSample }}" style="width:100%;margin-top:4px;padding:11px 0;font-family:inherit;font-size:12.5px;color:#9dc4ec;background:none;border:none;cursor:pointer;text-decoration:underline;" style-hover="color:#f2955c;">Continue without signing in</button>
-
         <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:18px;padding-top:18px;border-top:1px solid rgba(28,63,107,0.9);font-size:11px;color:#9dc4ec;opacity:0.8;">
           <span style="width:7px;height:7px;border-radius:50%;background:#2fc98e;"></span>
           Secure access &middot; Microsoft 365
@@ -166,14 +164,14 @@
     </div>
   </aside>
 
-  <main id="hubMain" style="position:relative;z-index:1;flex:1;min-width:0;padding:38px clamp(22px,3vw,46px) 60px;">
+  <main id="hubMain" style="position:relative;z-index:1;flex:1;min-width:0;padding:22px clamp(22px,3vw,46px) 60px;">
 
     <sc-if value="{{ isOverview }}" hint-placeholder-val="{{ true }}">
       <div>
         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;">
           <div>
-            <h1 style="margin:0;font-size:clamp(27px,3vw,37px);font-weight:700;letter-spacing:-0.025em;line-height:1.06;">Learning Performance Overview</h1>
-            <p style="margin:11px 0 0;font-size:15px;color:#9dc4ec;line-height:1.5;max-width:640px;text-wrap:pretty;">One view across every active learning module and field team.</p>
+            <h1 style="margin:0;font-size:clamp(22px,2.4vw,29px);font-weight:700;letter-spacing:-0.025em;line-height:1.06;">Learning Performance Overview</h1>
+            <p style="margin:6px 0 0;font-size:14px;color:#9dc4ec;line-height:1.4;max-width:640px;text-wrap:pretty;">One view across every active learning module and field team.</p>
           </div>
           <div style="flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
             <span style="padding:9px 17px;border-radius:22px;font-size:12.5px;font-weight:600;color:#f2955c;background:rgba(236,109,37,0.12);border:1px solid rgba(236,109,37,0.45);">{{ moduleCountLabel }}</span>
@@ -181,54 +179,54 @@
           </div>
         </div>
 
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(214px,1fr));gap:16px;margin-top:26px;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(214px,1fr));gap:12px;margin-top:16px;">
           <sc-for list="{{ portfolioKpis }}" as="k" hint-placeholder-count="4">
-            <div style="padding:21px 23px 22px;border-radius:16px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.5);">
+            <div style="padding:14px 18px 15px;border-radius:14px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.5);">
               <div style="font-size:10.5px;font-weight:600;letter-spacing:0.17em;color:#8fb0d4;text-transform:uppercase;">{{ k.label }}</div>
-              <div style="margin-top:12px;font-size:38px;font-weight:700;letter-spacing:-0.035em;line-height:1;color:{{ k.color }};">{{ k.value }}</div>
-              <div style="margin-top:9px;font-size:12.5px;color:#9dc4ec;line-height:1.45;">{{ k.note }}</div>
+              <div style="margin-top:8px;font-size:29px;font-weight:700;letter-spacing:-0.035em;line-height:1;color:{{ k.color }};">{{ k.value }}</div>
+              <div style="margin-top:6px;font-size:12px;color:#9dc4ec;line-height:1.4;">{{ k.note }}</div>
             </div>
           </sc-for>
         </div>
 
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(292px,1fr));gap:18px;margin-top:20px;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(292px,1fr));gap:14px;margin-top:14px;">
           <sc-for list="{{ moduleCards }}" as="m" hint-placeholder-count="3">
-            <button onClick="{{ m.open }}" style="display:block;width:100%;text-align:left;padding:22px 24px 23px;font-family:inherit;border-radius:16px;cursor:pointer;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);border-left:3px solid {{ m.accent }};box-shadow:0 18px 40px rgba(0,4,12,0.5);transition:transform .16s ease,border-color .16s ease;" style-hover="transform:translateY(-3px);">
+            <button onClick="{{ m.open }}" style="display:block;width:100%;text-align:left;padding:16px 20px 17px;font-family:inherit;border-radius:14px;cursor:pointer;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);border-left:3px solid {{ m.accent }};box-shadow:0 18px 40px rgba(0,4,12,0.5);transition:transform .16s ease,border-color .16s ease;" style-hover="transform:translateY(-3px);">
               <span style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
-                <span style="min-width:0;font-size:19px;font-weight:600;letter-spacing:-0.015em;color:#f3f7fc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ m.name }}</span>
+                <span style="min-width:0;font-size:17px;font-weight:600;letter-spacing:-0.015em;color:#f3f7fc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ m.name }}</span>
                 <span style="flex:none;text-align:right;">
                   <span style="display:block;font-size:10px;font-weight:600;letter-spacing:0.14em;color:#6f92ba;text-transform:uppercase;">{{ m.eyebrow }}</span>
                   <span style="display:block;margin-top:3px;font-size:10px;font-weight:600;letter-spacing:0.1em;color:#4f6c8e;text-transform:uppercase;">{{ m.client }}</span>
                 </span>
               </span>
-              <span style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:19px;">
+              <span style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:13px;">
                 <span style="display:block;">
                   <span style="display:block;font-size:11.5px;color:#8fb0d4;">Pass rate</span>
-                  <span style="display:block;margin-top:4px;font-size:21px;font-weight:700;letter-spacing:-0.02em;color:{{ m.passColor }};font-variant-numeric:tabular-nums;">{{ m.passRate }}</span>
+                  <span style="display:block;margin-top:3px;font-size:18px;font-weight:700;letter-spacing:-0.02em;color:{{ m.passColor }};font-variant-numeric:tabular-nums;">{{ m.passRate }}</span>
                 </span>
                 <span style="display:block;">
                   <span style="display:block;font-size:11.5px;color:#8fb0d4;">Completion</span>
-                  <span style="display:block;margin-top:4px;font-size:21px;font-weight:700;letter-spacing:-0.02em;color:{{ m.compColor }};font-variant-numeric:tabular-nums;">{{ m.completion }}</span>
+                  <span style="display:block;margin-top:3px;font-size:18px;font-weight:700;letter-spacing:-0.02em;color:{{ m.compColor }};font-variant-numeric:tabular-nums;">{{ m.completion }}</span>
                 </span>
                 <span style="display:block;">
                   <span style="display:block;font-size:11.5px;color:#8fb0d4;">Avg score</span>
-                  <span style="display:block;margin-top:4px;font-size:21px;font-weight:700;letter-spacing:-0.02em;color:#8fd6a8;font-variant-numeric:tabular-nums;">{{ m.aveScore }}</span>
+                  <span style="display:block;margin-top:3px;font-size:18px;font-weight:700;letter-spacing:-0.02em;color:#8fd6a8;font-variant-numeric:tabular-nums;">{{ m.aveScore }}</span>
                 </span>
               </span>
-              <span style="display:block;margin-top:18px;height:7px;border-radius:5px;background:rgba(28,63,107,0.9);overflow:hidden;">
+              <span style="display:block;margin-top:12px;height:6px;border-radius:5px;background:rgba(28,63,107,0.9);overflow:hidden;">
                 <span style="display:block;height:100%;width:{{ m.completion }};background:{{ m.barFill }};border-radius:5px;transition:width .5s ease;"></span>
               </span>
-              <span style="display:block;margin-top:14px;padding-top:13px;border-top:1px solid rgba(28,63,107,0.7);font-size:12.5px;color:#9dc4ec;">{{ m.footer }}</span>
+              <span style="display:block;margin-top:10px;padding-top:9px;border-top:1px solid rgba(28,63,107,0.7);font-size:12px;color:#9dc4ec;">{{ m.footer }}</span>
             </button>
           </sc-for>
         </div>
 
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:18px;margin-top:20px;align-items:stretch;">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:14px;margin-top:14px;align-items:stretch;">
 
-          <section style="display:flex;flex-direction:column;padding:23px 26px 26px;border-radius:16px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.5);">
-            <h2 style="margin:0;font-size:17px;font-weight:600;letter-spacing:-0.015em;">Module performance comparison</h2>
-            <div style="margin-top:5px;font-size:12.5px;color:#8fb0d4;">Pass rate by module</div>
-            <div style="flex:1;display:flex;align-items:flex-end;justify-content:space-around;gap:16px;min-height:240px;margin-top:22px;">
+          <section style="display:flex;flex-direction:column;padding:16px 20px 18px;border-radius:14px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.5);">
+            <h2 style="margin:0;font-size:16px;font-weight:600;letter-spacing:-0.015em;">Module performance comparison</h2>
+            <div style="margin-top:4px;font-size:12px;color:#8fb0d4;">Pass rate by module</div>
+            <div style="flex:1;display:flex;align-items:flex-end;justify-content:space-around;gap:16px;min-height:170px;margin-top:14px;">
               <sc-for list="{{ chartBars }}" as="b" hint-placeholder-count="3">
                 <button onClick="{{ b.open }}" style="flex:1;min-width:0;max-width:150px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;align-self:stretch;padding:0;font-family:inherit;background:none;border:none;cursor:pointer;">
                   <span style="font-size:13px;font-weight:700;color:{{ b.color }};font-variant-numeric:tabular-nums;">{{ b.value }}</span>
@@ -240,22 +238,22 @@
             </div>
           </section>
 
-          <section style="display:flex;flex-direction:column;padding:23px 26px 26px;border-radius:16px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.5);">
-            <h2 style="margin:0;font-size:17px;font-weight:600;letter-spacing:-0.015em;">Portfolio action summary</h2>
-            <div style="margin-top:5px;font-size:12.5px;color:#8fb0d4;">Every learner assignment across all modules</div>
-            <div style="display:flex;flex-direction:column;gap:2px;margin-top:20px;">
+          <section style="display:flex;flex-direction:column;padding:16px 20px 18px;border-radius:14px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.5);">
+            <h2 style="margin:0;font-size:16px;font-weight:600;letter-spacing:-0.015em;">Portfolio action summary</h2>
+            <div style="margin-top:4px;font-size:12px;color:#8fb0d4;">Every learner assignment across all modules</div>
+            <div style="display:flex;flex-direction:column;gap:2px;margin-top:12px;">
               <sc-for list="{{ statusRows }}" as="s" hint-placeholder-count="4">
-                <div style="display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid rgba(28,63,107,0.42);">
+                <div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid rgba(28,63,107,0.42);">
                   <span style="width:9px;height:9px;border-radius:50%;flex:none;background:{{ s.dot }};"></span>
-                  <span style="flex:1;font-size:13.5px;color:#e4edf7;">{{ s.label }}</span>
-                  <span style="flex:none;font-size:15px;font-weight:700;color:#f3f7fc;font-variant-numeric:tabular-nums;">{{ s.count }}</span>
+                  <span style="flex:1;font-size:13px;color:#e4edf7;">{{ s.label }}</span>
+                  <span style="flex:none;font-size:14px;font-weight:700;color:#f3f7fc;font-variant-numeric:tabular-nums;">{{ s.count }}</span>
                   <span style="flex:none;width:46px;text-align:right;font-size:12px;color:#7ba0c8;font-variant-numeric:tabular-nums;">{{ s.pct }}</span>
                 </div>
               </sc-for>
             </div>
-            <div style="margin-top:20px;padding:18px 20px;border-radius:12px;background:rgba(236,109,37,0.1);border:1px solid rgba(236,109,37,0.38);">
-              <div style="font-size:15px;font-weight:600;color:#f3f7fc;letter-spacing:-0.01em;">{{ followUpTitle }}</div>
-              <div style="margin-top:7px;font-size:13px;line-height:1.55;color:#c9d7e6;text-wrap:pretty;">{{ followUpBody }}</div>
+            <div style="margin-top:12px;padding:13px 16px;border-radius:12px;background:rgba(236,109,37,0.1);border:1px solid rgba(236,109,37,0.38);">
+              <div style="font-size:14px;font-weight:600;color:#f3f7fc;letter-spacing:-0.01em;">{{ followUpTitle }}</div>
+              <div style="margin-top:5px;font-size:12.5px;line-height:1.45;color:#c9d7e6;text-wrap:pretty;">{{ followUpBody }}</div>
             </div>
           </section>
 
