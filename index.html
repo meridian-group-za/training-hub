@@ -183,14 +183,55 @@
           </div>
         </div>
 
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(214px,1fr));gap:12px;margin-top:16px;">
-          <sc-for list="{{ portfolioKpis }}" as="k" hint-placeholder-count="4">
-            <div style="padding:14px 18px 15px;border-radius:14px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.5);">
-              <div style="font-size:10.5px;font-weight:600;letter-spacing:0.17em;color:#8fb0d4;text-transform:uppercase;">{{ k.label }}</div>
-              <div style="margin-top:8px;font-size:29px;font-weight:700;letter-spacing:-0.035em;line-height:1;color:{{ k.color }};">{{ k.value }}</div>
-              <div style="margin-top:6px;font-size:12px;color:#9dc4ec;line-height:1.4;">{{ k.note }}</div>
-            </div>
-          </sc-for>
+        <div id="overviewTop" style="display:grid;grid-template-columns:minmax(220px,280px) 1fr;gap:14px;margin-top:16px;align-items:start;">
+
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <sc-for list="{{ portfolioKpis }}" as="k" hint-placeholder-count="4">
+              <div style="padding:14px 18px 15px;border-radius:14px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.5);">
+                <div style="font-size:10.5px;font-weight:600;letter-spacing:0.17em;color:#8fb0d4;text-transform:uppercase;">{{ k.label }}</div>
+                <div style="margin-top:8px;font-size:29px;font-weight:700;letter-spacing:-0.035em;line-height:1;color:{{ k.color }};">{{ k.value }}</div>
+                <div style="margin-top:6px;font-size:12px;color:#9dc4ec;line-height:1.4;">{{ k.note }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:14px;">
+
+            <section style="display:flex;flex-direction:column;padding:16px 20px 18px;border-radius:14px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.5);">
+              <h2 style="margin:0;font-size:16px;font-weight:600;letter-spacing:-0.015em;">Module performance comparison</h2>
+              <div style="margin-top:4px;font-size:12px;color:#8fb0d4;">Pass rate by module</div>
+              <div style="flex:1;display:flex;align-items:flex-end;justify-content:space-around;gap:16px;min-height:170px;margin-top:14px;">
+                <sc-for list="{{ chartBars }}" as="b" hint-placeholder-count="3">
+                  <button onClick="{{ b.open }}" style="flex:1;min-width:0;max-width:150px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;align-self:stretch;padding:0;font-family:inherit;background:none;border:none;cursor:pointer;">
+                    <span style="font-size:13px;font-weight:700;color:{{ b.color }};font-variant-numeric:tabular-nums;">{{ b.value }}</span>
+                    <span style="font-size:10.5px;color:#6f92ba;margin-top:2px;font-variant-numeric:tabular-nums;">{{ b.detail }}</span>
+                    <span style="display:block;width:100%;margin-top:9px;height:{{ b.height }};min-height:5px;border-radius:8px 8px 3px 3px;background:{{ b.fill }};transition:height .55s ease;"></span>
+                    <span style="margin-top:12px;font-size:11.5px;line-height:1.35;color:#c9d7e6;text-align:center;text-wrap:pretty;">{{ b.label }}</span>
+                  </button>
+                </sc-for>
+              </div>
+            </section>
+
+            <section style="display:flex;flex-direction:column;padding:16px 20px 18px;border-radius:14px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.5);">
+              <h2 style="margin:0;font-size:16px;font-weight:600;letter-spacing:-0.015em;">Portfolio action summary</h2>
+              <div style="margin-top:4px;font-size:12px;color:#8fb0d4;">Every learner assignment across all modules</div>
+              <div style="display:flex;flex-direction:column;gap:2px;margin-top:12px;">
+                <sc-for list="{{ statusRows }}" as="s" hint-placeholder-count="4">
+                  <div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid rgba(28,63,107,0.42);">
+                    <span style="width:9px;height:9px;border-radius:50%;flex:none;background:{{ s.dot }};"></span>
+                    <span style="flex:1;font-size:13px;color:#e4edf7;">{{ s.label }}</span>
+                    <span style="flex:none;font-size:14px;font-weight:700;color:#f3f7fc;font-variant-numeric:tabular-nums;">{{ s.count }}</span>
+                    <span style="flex:none;width:46px;text-align:right;font-size:12px;color:#7ba0c8;font-variant-numeric:tabular-nums;">{{ s.pct }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="margin-top:12px;padding:13px 16px;border-radius:12px;background:rgba(236,109,37,0.1);border:1px solid rgba(236,109,37,0.38);">
+                <div style="font-size:14px;font-weight:600;color:#f3f7fc;letter-spacing:-0.01em;">{{ followUpTitle }}</div>
+                <div style="margin-top:5px;font-size:12.5px;line-height:1.45;color:#c9d7e6;text-wrap:pretty;">{{ followUpBody }}</div>
+              </div>
+            </section>
+
+          </div>
         </div>
 
         <div id="moduleGrid" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:14px;">
@@ -223,44 +264,6 @@
               <span style="display:block;margin-top:10px;padding-top:9px;border-top:1px solid rgba(28,63,107,0.7);font-size:12px;color:#9dc4ec;">{{ m.footer }}</span>
             </button>
           </sc-for>
-        </div>
-
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:14px;margin-top:14px;align-items:stretch;">
-
-          <section style="display:flex;flex-direction:column;padding:16px 20px 18px;border-radius:14px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.5);">
-            <h2 style="margin:0;font-size:16px;font-weight:600;letter-spacing:-0.015em;">Module performance comparison</h2>
-            <div style="margin-top:4px;font-size:12px;color:#8fb0d4;">Pass rate by module</div>
-            <div style="flex:1;display:flex;align-items:flex-end;justify-content:space-around;gap:16px;min-height:170px;margin-top:14px;">
-              <sc-for list="{{ chartBars }}" as="b" hint-placeholder-count="3">
-                <button onClick="{{ b.open }}" style="flex:1;min-width:0;max-width:150px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;align-self:stretch;padding:0;font-family:inherit;background:none;border:none;cursor:pointer;">
-                  <span style="font-size:13px;font-weight:700;color:{{ b.color }};font-variant-numeric:tabular-nums;">{{ b.value }}</span>
-                  <span style="font-size:10.5px;color:#6f92ba;margin-top:2px;font-variant-numeric:tabular-nums;">{{ b.detail }}</span>
-                  <span style="display:block;width:100%;margin-top:9px;height:{{ b.height }};min-height:5px;border-radius:8px 8px 3px 3px;background:{{ b.fill }};transition:height .55s ease;"></span>
-                  <span style="margin-top:12px;font-size:11.5px;line-height:1.35;color:#c9d7e6;text-align:center;text-wrap:pretty;">{{ b.label }}</span>
-                </button>
-              </sc-for>
-            </div>
-          </section>
-
-          <section style="display:flex;flex-direction:column;padding:16px 20px 18px;border-radius:14px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 18px 40px rgba(0,4,12,0.5);">
-            <h2 style="margin:0;font-size:16px;font-weight:600;letter-spacing:-0.015em;">Portfolio action summary</h2>
-            <div style="margin-top:4px;font-size:12px;color:#8fb0d4;">Every learner assignment across all modules</div>
-            <div style="display:flex;flex-direction:column;gap:2px;margin-top:12px;">
-              <sc-for list="{{ statusRows }}" as="s" hint-placeholder-count="4">
-                <div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid rgba(28,63,107,0.42);">
-                  <span style="width:9px;height:9px;border-radius:50%;flex:none;background:{{ s.dot }};"></span>
-                  <span style="flex:1;font-size:13px;color:#e4edf7;">{{ s.label }}</span>
-                  <span style="flex:none;font-size:14px;font-weight:700;color:#f3f7fc;font-variant-numeric:tabular-nums;">{{ s.count }}</span>
-                  <span style="flex:none;width:46px;text-align:right;font-size:12px;color:#7ba0c8;font-variant-numeric:tabular-nums;">{{ s.pct }}</span>
-                </div>
-              </sc-for>
-            </div>
-            <div style="margin-top:12px;padding:13px 16px;border-radius:12px;background:rgba(236,109,37,0.1);border:1px solid rgba(236,109,37,0.38);">
-              <div style="font-size:14px;font-weight:600;color:#f3f7fc;letter-spacing:-0.01em;">{{ followUpTitle }}</div>
-              <div style="margin-top:5px;font-size:12.5px;line-height:1.45;color:#c9d7e6;text-wrap:pretty;">{{ followUpBody }}</div>
-            </div>
-          </section>
-
         </div>
       </div>
     </sc-if>
