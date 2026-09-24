@@ -507,7 +507,16 @@ class Component extends DCLogic {
     const app = this.msal();
     if (!app) throw new Error("no msal");
     if (app.handleRedirectPromise) { try { await app.handleRedirectPromise(); } catch (e) { /* not a redirect return */ } }
-    const accounts = app.getAllAccounts();
+    let accounts = app.getAllAccounts();
+    if (!accounts.length) {
+      // Arriving from the portal, the Microsoft session is live even though
+      // nothing is cached for this origin. Reusing it means live figures
+      // rather than quietly falling back to the last snapshot.
+      try {
+        await app.ssoSilent({ scopes: MSAL.scopes });
+        accounts = app.getAllAccounts();
+      } catch (e) { /* no session - the snapshot is the right fallback */ }
+    }
     if (!accounts.length) throw new Error("no account");
     const r = await app.acquireTokenSilent({ scopes: MSAL.scopes, account: accounts[0] });
     return r.accessToken;
