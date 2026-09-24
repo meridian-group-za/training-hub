@@ -472,7 +472,7 @@ class Component extends DCLogic {
     lib: null, brands: [], data: {}, view: "overview",
     query: "", gapsOnly: false, region: null, manager: null, repType: null, status: null,
     mode: "loading", errors: [], lastSync: null, logos: {},
-    authed: false, signedIn: false, signingIn: false, signInError: ""
+    authed: false, signedIn: false, signingIn: false, signInError: "", authChecked: false
   };
 
   async componentDidMount() {
@@ -525,9 +525,9 @@ class Component extends DCLogic {
   async connect() {
     try {
       const token = await this.token();
-      this.setState({ authed: true, signedIn: true });
+      this.setState({ authed: true, signedIn: true, authChecked: true });
       await this.refresh(token);
-    } catch (e) { this.setState({ mode: "snapshot" }); }
+    } catch (e) { this.setState({ mode: "snapshot", authChecked: true }); }
   }
 
   async signOut() {
@@ -802,7 +802,7 @@ class Component extends DCLogic {
     return {
       syncState: busy ? "Refreshing…" : st.mode === "live" ? "Live" : "Offline snapshot",
       syncDot: busy ? "#f2955c" : st.mode === "live" ? "#8fd6a8" : "#6f92ba",
-      showLogin: !st.authed,
+      showLogin: !st.authed && st.authChecked,
       canExit: st.authed,
       exitLabel: st.signedIn ? "Sign out" : "Back to sign in",
       signOut: () => this.signOut(),
