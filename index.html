@@ -1046,8 +1046,8 @@ class Component extends DCLogic {
     if (el.querySelector("[data-nx-back]")) return false;
     var txt = (el.textContent || "").trim();
     // Log out / Sign out on most of these. Inventory has neither - its
-    // equivalent bottom-of-nav control is "Collapse Navigation", which Carin
-    // asked to use there instead.
+    // equivalent bottom-of-nav control is "Collapse Navigation", which is
+    // used there instead.
     if (!/^((log|sign) ?out|collapse navigation)$/i.test(txt)) return false;
     var r = el.getBoundingClientRect();
     return r.width > 0 && r.height > 0;   // skip hidden copies
@@ -1069,7 +1069,7 @@ class Component extends DCLogic {
   }
 
   // Sales Insights keeps its Sign out in the top-right header, so the swapped
-  // control lands up there. Carin wants it with the rest of the navigation, so
+  // control lands up there. It belongs with the rest of the navigation, so
   // anything outside the nav column is moved into it, above the Meridian logo
   // that sits at the foot of these sidebars.
   function moveIntoSidebar(el) {
@@ -1140,7 +1140,7 @@ class Component extends DCLogic {
   }
 
   // The signed-in person's name sits just above this control on some of these
-  // dashboards. Carin asked for it gone. Only the element immediately before
+  // dashboards. It was requested removed. Only the element immediately before
   // the button is considered, and only when it looks like a name: a couple of
   // words, letters only, no digits and no label wording.
   function hideNameAbove(el) {
