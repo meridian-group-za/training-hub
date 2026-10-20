@@ -395,6 +395,29 @@
           </div>
         </section>
 
+        <!-- Completion by resource type, under the region chart. -->
+        <section style="display:flex;flex-direction:column;margin-top:8px;padding:11px 15px 13px;border-radius:12px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 20px 46px rgba(0,4,12,0.52);">
+          <h2 style="margin:0;font-size:13px;font-weight:600;letter-spacing:-0.015em;">Completion by resource type</h2>
+          <div style="margin-top:2px;font-size:11px;color:#8fb0d4;">Lessons completed as a share of lessons assigned &middot; click a resource type to filter</div>
+          <sc-if value="{{ noTypeBars }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:8px;font-size:11.5px;color:#6f92ba;">No resource type in this module's workbook yet.</div>
+          </sc-if>
+          <sc-if value="{{ hasTypeBars }}" hint-placeholder-val="{{ true }}">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:4px 28px;margin-top:8px;">
+              <sc-for list="{{ typeBars }}" as="g" hint-placeholder-count="3">
+                <button onClick="{{ g.select }}" style="display:grid;grid-template-columns:minmax(150px,1.2fr) minmax(0,2fr) 46px 90px;gap:12px;align-items:center;width:100%;padding:5px 8px;font-family:inherit;text-align:left;background:{{ g.bg }};border:1px solid {{ g.border }};border-radius:8px;cursor:pointer;transition:background .14s ease;" style-hover="background:rgba(28,63,107,0.3);">
+                  <span style="min-width:0;font-size:11.5px;color:#e4edf7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ g.name }}</span>
+                  <span style="display:block;height:8px;border-radius:5px;background:rgba(28,63,107,0.85);overflow:hidden;">
+                    <span style="display:block;height:100%;width:{{ g.pctLabel }};border-radius:5px;background:{{ g.barFill }};transition:width .5s ease;"></span>
+                  </span>
+                  <span style="text-align:right;font-size:11.5px;font-weight:700;color:{{ g.pctColor }};font-variant-numeric:tabular-nums;">{{ g.pctLabel }}</span>
+                  <span style="text-align:right;font-size:10.5px;color:#6f92ba;font-variant-numeric:tabular-nums;white-space:nowrap;">{{ g.lessons }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+        </section>
+
         <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;align-items:flex-start;">
 
           <section style="flex:2 1 640px;min-width:0;display:flex;flex-direction:column;border-radius:16px;background:rgba(6,22,48,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(28,63,107,0.9);box-shadow:0 20px 46px rgba(0,4,12,0.52);overflow:hidden;">
@@ -417,7 +440,7 @@
             <div style="display:grid;grid-template-columns:56px minmax(160px,1.5fr) minmax(120px,1.2fr) minmax(110px,1.1fr) minmax(100px,1fr) 96px minmax(120px,1.1fr) 62px;gap:12px;padding:12px 26px;font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#6f92ba;background:rgba(0,6,18,0.55);border-top:1px solid rgba(28,63,107,0.7);border-bottom:1px solid rgba(28,63,107,0.7);">
               <div>Rank</div>
               <div>Learner</div>
-              <div>Rep type</div>
+              <div>Resource type</div>
               <div>Manager</div>
               <div>Region</div>
               <div>Status</div>
@@ -673,7 +696,7 @@ class Component extends DCLogic {
   // CSV opens directly in Excel with no extra dependency — exports exactly
   // what's on screen (current search/filter/"needs action" state).
   exportLeaderboard(rows, roster, rankOf, m) {
-    const header = ["Rank", "Learner", "Code", "Rep Type", "Manager", "Region", "Status", "Lessons Completed", "Total Lessons", "Score %"];
+    const header = ["Rank", "Learner", "Code", "Resource Type", "Manager", "Region", "Status", "Lessons Completed", "Total Lessons", "Score %"];
     const csvEscape = v => {
       const s = String(v == null ? "" : v);
       return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
@@ -940,7 +963,7 @@ class Component extends DCLogic {
       filterSelects: [
         { field: "region", all: "All regions", values: uniqueBy(m.reps, roster, "region") },
         { field: "manager", all: "All managers", values: uniqueBy(m.reps, roster, "manager") },
-        { field: "repType", all: "All rep types", values: uniqueBy(m.reps, roster, "type") },
+        { field: "repType", all: "All resource types", values: uniqueBy(m.reps, roster, "type") },
         { field: "status", all: "All statuses", values: statusOrder.filter(k => m.reps.some(r => statusKey(r.status) === k)), labels: STATUS }
       ].map(cfg => ({
         value: st[cfg.field] == null ? "" : st[cfg.field],
@@ -975,6 +998,11 @@ class Component extends DCLogic {
 
       // ---- completion by region
       regionBars: groupList(rollScope("region"), "region"),
+      // Completion by resource type (the workbook's Rep Type column), same
+      // rollup and click-to-filter as the region chart.
+      typeBars: groupList(rollScope("type"), "repType"),
+      hasTypeBars: Object.keys(rollScope("type")).length > 0,
+      noTypeBars: Object.keys(rollScope("type")).length === 0,
 
       // ---- manager leaderboard
       managerBoard: Object.keys(mgrTable).map(k => {
