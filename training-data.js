@@ -17,7 +17,8 @@ export const ROOT = CLIENTS[0].root;
 // (pg_reports.py, TRAINING_OTHER_CLIENTS) carries the same list.
 export const OTHER_CLIENT_FOLDERS = {
   "lindt": { key: "lindt", name: "Lindt" },
-  "sir fruit": { key: "sir-fruit", name: "Sir Fruit" }
+  "sir fruit": { key: "sir-fruit", name: "Sir Fruit" },
+  "mars": { key: "mars", name: "Mars" }
 };
 
 // Turn "Oral B Training Leaderboard.xlsx" into "Oral B".
