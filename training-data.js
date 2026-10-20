@@ -11,6 +11,15 @@ export const CLIENTS = [
 ];
 export const ROOT = CLIENTS[0].root;
 
+// Folders inside P&G's Training folder that hold ANOTHER client's training.
+// Their modules are labelled with that client instead of P&G. Keyed on the
+// folder name, lower case. The daily refresh in the P&G Function App
+// (pg_reports.py, TRAINING_OTHER_CLIENTS) carries the same list.
+export const OTHER_CLIENT_FOLDERS = {
+  "lindt": { key: "lindt", name: "Lindt" },
+  "sir fruit": { key: "sir-fruit", name: "Sir Fruit" }
+};
+
 // Turn "Oral B Training Leaderboard.xlsx" into "Oral B".
 export function brandNameFromFile(fileName) {
   return fileName
@@ -177,11 +186,14 @@ export async function discoverBrands(token, driveId, client) {
       const key = slug(name);
       if (seen[key]) continue;
       seen[key] = true;
+      // The first folder under the client's root decides an override.
+      const top = path.slice((client0.root || "").length).replace(/^\//, "").split("/")[0].toLowerCase();
+      const owner = OTHER_CLIENT_FOLDERS[top] || client0;
       found.push({
         key: client0.key + ":" + key,
         name: name,
-        client: client0.name,
-        clientKey: client0.key,
+        client: owner.name,
+        clientKey: owner.key,
         eyebrow: (label || "TRAINING").toUpperCase(),
         file: path + "/" + item.name,
         modified: item.lastModifiedDateTime || "",
