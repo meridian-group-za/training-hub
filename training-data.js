@@ -38,16 +38,16 @@ export const BRANDS = [
   "name": "Sir Fruit",
   "eyebrow": "SIR FRUIT",
   "file": "Power BI - PG/Training/Sir Fruit/Sir Fruit Training Leaderboard.xlsx",
-  "client": "P&G",
-  "clientKey": "pg"
+  "client": "Sir Fruit",
+  "clientKey": "sir-fruit"
  },
  {
   "key": "lindt",
   "name": "Lindt",
   "eyebrow": "LINDT",
   "file": "Power BI - PG/Training/Lindt/Lindt Training Leaderboard.xlsx",
-  "client": "P&G",
-  "clientKey": "pg"
+  "client": "Lindt",
+  "clientKey": "lindt"
  },
  {
   "key": "oral-b",
