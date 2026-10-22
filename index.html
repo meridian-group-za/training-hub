@@ -516,6 +516,13 @@ const ACCENTS = ["#ec6d25", "#8fd6a8", "#7aa8e0", "#f2955c", "#b593e6", "#5fc8c0
 // The target is 100% — anything short of it is still outstanding, so green is
 // reserved for complete. Amber is close, red is a real gap.
 const pctColor = p => p >= 99.95 ? "#4fdda6" : p >= 70 ? "#f5a524" : "#ef4d5a";
+// A share as a label: one decimal place below 1%, so 105 of 26,712 lessons
+// reads 0.4% rather than a 0% that looks like nothing has happened.
+const shareLabel = (a, b) => {
+  if (!b) return "0%";
+  const p = (a / b) * 100;
+  return (p > 0 && p < 1 ? p.toFixed(1) : String(Math.round(p))) + "%";
+};
 const barFill = p => p >= 99.95 ? "linear-gradient(90deg,#22a877,#4fdda6)"
   : p >= 70 ? "linear-gradient(90deg,#c9741c,#f5a524)"
   : "linear-gradient(90deg,#c23a48,#ef4d5a)";
@@ -801,7 +808,7 @@ class Component extends DCLogic {
       const active = st[field] === k;
       return {
         name: k, pct: pct, lessons: num(v[1]) + " / " + num(v[0]),
-        pctLabel: pct + "%", pctColor: pctColor(pct), barFill: barFill(pct),
+        pctLabel: shareLabel(v[1], v[0]), pctColor: pctColor(pct), barFill: barFill(pct),
         // Column height for the region bar graph, scaled like the module chart.
         barHeight: Math.max(3, Math.round(pct * 0.72)) + "%",
         scoreLabel: sc + "% test", scoreColor: pctColor(sc), scoreBg: scoreBg(sc),
@@ -951,8 +958,8 @@ class Component extends DCLogic {
 
       kpis: [
         { label: "Assigned learners", value: num(inScope.length), color: "#f3f7fc", accent: "#4f8fd6", note: "In current filter view" },
-        { label: "Passed", value: num(sPassed), color: "#f3f7fc", accent: "#6cc48c", note: inScope.length ? Math.round((sPassed / inScope.length) * 100) + "% of learners" : "No learners in view" },
-        { label: "Lessons completed", value: sPct + "%", color: pctColor(sPct), accent: "#3fb6c6", note: num(sDone) + " of " + num(sTotal) + " lessons" },
+        { label: "Passed", value: num(sPassed), color: "#f3f7fc", accent: "#6cc48c", note: inScope.length ? shareLabel(sPassed, inScope.length) + " of learners" : "No learners in view" },
+        { label: "Lessons completed", value: shareLabel(sDone, sTotal), color: pctColor(sPct), accent: "#3fb6c6", note: num(sDone) + " of " + num(sTotal) + " lessons" },
         { label: "Average test score", value: one(sScore), color: "#f3f7fc", accent: "#8b7ad6", note: "Among completed assessments" },
         { label: "Action required", value: num(sAction), color: sAction ? "#f2955c" : "#8fd6a8", accent: "#ec6d25", note: "Not started, in progress or failed" }
       ],
